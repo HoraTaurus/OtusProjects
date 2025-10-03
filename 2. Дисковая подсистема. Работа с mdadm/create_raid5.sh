@@ -17,9 +17,9 @@ if ! command -v mdadm &> /dev/null; then
 fi
 
 # Создаем RAID
-read -p "Создать RAID 5 из /dev/sdb1 /dev/sdb2 /dev/sdb3 /dev/sdb4 /dev/sdb5? (y/n): " confirm
+read -p "Создать RAID 5 из /dev/sdb /dev/sdc /dev/sdd /dev/sde /dev/sdf? (y/n): " confirm
 if [ "$confirm" = "y" ]; then
-    mdadm --create --verbose /dev/md0 --level=5 --raid-devices=5 /dev/sdb1 /dev/sdb2 /dev/sdb3 /dev/sdb4 /dev/sdb5
+    mdadm --create --verbose /dev/md0 --level=5 --raid-devices=5 /dev/sdb /dev/sdc /dev/sdd /dev/sde /dev/sdf
     
     echo "Статус создания:"
     cat /proc/mdstat
