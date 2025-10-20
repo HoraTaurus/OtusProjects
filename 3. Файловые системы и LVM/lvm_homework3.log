@@ -1,0 +1,201 @@
+Script started on 2025-10-20 14:57:36+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ [7msudo -i[27msudo -i
+[?2004l[sudo] password for vassaya: 
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "=== ПРОВЕРКА ВОССТАНОВЛЕНИЯ ИЗ СНАПШОТА ==="[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cecho "=== ПРОВЕРКА ВОССТАНОВЛЕНИЯ ИЗ СНАПШОТА ==="
+[?2004l=== ПРОВЕРКА ВОССТАНОВЛЕНИЯ ИЗ СНАПШОТА ===
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mls -la /home/*.txt[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls -la /home/*.txt
+[?2004l-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file10.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file11.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file12.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file13.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file14.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file15.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file16.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file17.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file18.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file19.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file1.txt
+-rw-r--r-- 1 root root 13 Oct 20 14:48 /home/file20.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file2.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file3.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file4.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file5.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file6.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file7.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file8.txt
+-rw-r--r-- 1 root root 12 Oct 20 14:48 /home/file9.txt
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "Всего файлов: $(ls -1 /home/file*.txt 2>/dev/null | wc -l)[27m[7m"[27m[A]0;root@Otus-PC: ~root@Otus-PC:~# echo "Всего файлов: $(ls -1 /home/file*.txt 2>/dev/null | wc -l)"
+[?2004lВсего файлов: 20
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "=== ПРОВЕРКА LVM СНАПШОТОВ ==="[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cecho "=== ПРОВЕРКА LVM СНАПШОТОВ ==="
+[?2004l=== ПРОВЕРКА LVM СНАПШОТОВ ===
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvs | grep snap[27mlvs | grep snap
+[?2004l  WARNING: Cannot find matching snapshot segment for ubuntu-vg/lv_home.
+  lv_home_[01;31m[Ksnap[m[K ubuntu-vg -wi-a-----    2.00g                                                    
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "=== ПРОВЕРКА ВСЕХ МОНТИРОВАНИЙ ==="[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cecho "=== ПРОВЕРКА ВСЕХ МОНТИРОВАНИЙ ==="
+[?2004l=== ПРОВЕРКА ВСЕХ МОНТИРОВАНИЙ ===
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mdf -hT | grep -E "(var|home|opt|/$)"[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cdf -hT | grep -E "(var|home|opt|/$)"
+[?2004l/dev/mapper/vg_root-lv_root    ext4    98G  4.0G   89G   5% [01;31m[K/[m[K
+/dev/mapper/ubuntu--vg-lv_[01;31m[Kvar[m[K  ext4    20G  2.4G   17G  13% /[01;31m[Kvar[m[K
+/dev/mapper/ubuntu--vg-lv_[01;31m[Khome[m[K xfs     10G  638M  9.4G   7% /[01;31m[Khome[m[K
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkfs.btrfs -f /dev/ubuntu-vg/lv_opt[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.btrfs -f /dev/ubuntu-vg/lv_opt
+[?2004lCommand 'mkfs.btrfs' not found, but can be installed with:
+apt install btrfs-progs
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mapt install btrfs-progs[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Capt install btrfs-progs
+[?2004lReading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following package was automatically installed and is no longer required:
+  libllvm19
+Use 'apt autoremove' to remove it.
+The following additional packages will be installed:
+  libreiserfscore0t64
+Suggested packages:
+  duperemove
+The following NEW packages will be installed:
+  btrfs-progs libreiserfscore0t64
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 1,060 kB of archives.
+After this operation, 5,260 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+[33m0% [Working][0m            Get:1 http://ru.archive.ubuntu.com/ubuntu noble/main amd64 libreiserfscore0t64 amd64 1:3.6.27-7.1build1 [76.2 kB]
+[33m1% [1 libreiserfscore0t64 11.9 kB/76.2 kB 16%][0m[33m                                              16% [Working][0m             Get:2 http://ru.archive.ubuntu.com/ubuntu noble/main amd64 btrfs-progs amd64 6.6.3-1.1build2 [984 kB]
+[33m18% [2 btrfs-progs 35.7 kB/984 kB 4%][0m[33m                                     100% [Working][0m              Fetched 1,060 kB in 1s (1,921 kB/s)
+
+7[0;23r8[1ASelecting previously unselected package libreiserfscore0t64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 151801 files and directories currently installed.)
+Preparing to unpack .../libreiserfscore0t64_1%3a3.6.27-7.1build1_amd64.deb ...
+7[24;0f[42m[30mProgress: [  0%][49m[39m [..........................................................] 87[24;0f[42m[30mProgress: [ 11%][49m[39m [######....................................................] 8Unpacking libreiserfscore0t64 (1:3.6.27-7.1build1) ...
+7[24;0f[42m[30mProgress: [ 22%][49m[39m [############..............................................] 8Selecting previously unselected package btrfs-progs.
+Preparing to unpack .../btrfs-progs_6.6.3-1.1build2_amd64.deb ...
+7[24;0f[42m[30mProgress: [ 33%][49m[39m [###################.......................................] 8Unpacking btrfs-progs (6.6.3-1.1build2) ...
+7[24;0f[42m[30mProgress: [ 44%][49m[39m [#########################.................................] 8Setting up libreiserfscore0t64 (1:3.6.27-7.1build1) ...
+7[24;0f[42m[30mProgress: [ 56%][49m[39m [################################..........................] 87[24;0f[42m[30mProgress: [ 67%][49m[39m [######################################....................] 8Setting up btrfs-progs (6.6.3-1.1build2) ...
+7[24;0f[42m[30mProgress: [ 78%][49m[39m [#############################################.............] 87[24;0f[42m[30mProgress: [ 89%][49m[39m [###################################################.......] 8Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for initramfs-tools (0.142ubuntu25.5) ...
+update-initramfs: Generating /boot/initrd.img-6.14.0-33-generic
+Processing triggers for libc-bin (2.39-0ubuntu8.6) ...
+
+7[0;24r8[1A[J[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkfs.btrfs -f /dev/ubuntu-vg/lv_opt[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.btrfs -f /dev/ubuntu-vg/lv_opt
+[?2004lbtrfs-progs v6.6.3
+See https://btrfs.readthedocs.io for more information.
+
+Performing full device TRIM /dev/ubuntu-vg/lv_opt (5.00GiB) ...
+NOTE: several default settings have changed in version 5.15, please make sure
+      this does not affect your deployments:
+      - DUP for metadata (-m dup)
+      - enabled no-holes (-O no-holes)
+      - enabled free-space-tree (-R free-space-tree)
+
+Label:              (null)
+UUID:               efa75ca2-b873-41ea-ac93-012cd36344fc
+Node size:          16384
+Sector size:        4096
+Filesystem size:    5.00GiB
+Block group profiles:
+  Data:             single            8.00MiB
+  Metadata:         DUP             256.00MiB
+  System:           DUP               8.00MiB
+SSD detected:       no
+Zoned device:       no
+Incompat features:  extref, skinny-metadata, no-holes, free-space-tree
+Runtime features:   free-space-tree
+Checksum:           crc32c
+Number of devices:  1
+Devices:
+   ID        SIZE  PATH                 
+    1     5.00GiB  /dev/ubuntu-vg/lv_opt
+
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmount -o compress=zstd,noatime,autodefrag /dev/ubuntu-vg/lv_opt [27m[7m/[27m[7mopt[27m[A]0;root@Otus-PC: ~root@Otus-PC:~# mount -o compress=zstd,noatime,autodefrag /dev/ubuntu-vg/lv_opt /opt
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "/dev/ubuntu-vg/lv_opt /opt btrfs compress=zstd,noatime,aut[27m[7mo[27m[7mdefrag 0 2" >> /etc/fstab[27m[Aecho "/dev/ubuntu-vg/lv_opt /opt btrfs compress=zstd,noatime,autodefrag 0 2" >> /etc/fstab
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mbtrfs subvolume create /opt/data[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cbtrfs subvolume create /opt/data
+[?2004lCreate subvolume '/opt/data'
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mbtrfs subvolume snapshot /opt/data /opt/data_snapshot[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cbtrfs subvolume snapshot /opt/data /opt/data_snapshot
+[?2004lCreate a snapshot of '/opt/data' in '/opt/data_snapshot'
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mbtrfs subvolume list /opt[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cbtrfs subvolume list /opt
+[?2004lID 256 gen 7 top level 5 path data
+ID 257 gen 7 top level 5 path data_snapshot
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7msystemctl daemon-reload[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Csystemctl daemon-reload
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmount -a[27mmount -a
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "=== ИТОГОВАЯ ПРОВЕРКА ВЫПОЛНЕНИЯ ЗАДАНИЯ ==="[27m
+[7mecho "1. ✅ Том под /var в mirror:"[27m
+[7mlvs -o +devices | grep lv_var[27m
+[7mdf -hT /var[27m[A[A[A]0;root@Otus-PC: ~root@Otus-PC:~# echo "=== ИТОГОВАЯ ПРОВЕРКА ВЫПОЛНЕНИЯ ЗАДАНИЯ ==="
+echo "1. ✅ Том под /var в mirror:"
+lvs -o +devices | grep lv_var
+df -hT /var
+[?2004l=== ИТОГОВАЯ ПРОВЕРКА ВЫПОЛНЕНИЯ ЗАДАНИЯ ===
+1. ✅ Том под /var в mirror:
+  WARNING: Cannot find matching snapshot segment for ubuntu-vg/lv_home.
+  WARNING: Cannot find matching snapshot segment for ubuntu-vg/lv_home.
+  [01;31m[Klv_var[m[K       ubuntu-vg -wi-ao----   20.00g                                                     /dev/sdc(0)   
+  [01;31m[Klv_var[m[K       ubuntu-vg -wi-ao----   20.00g                                                     /dev/sdd(0)   
+Filesystem                    Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-lv_var ext4   20G  2.4G   17G  13% /var
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvs -o +devices | grep lv_var[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvs -o +devices | grep lv_var
+[?2004l  WARNING: Cannot find matching snapshot segment for ubuntu-vg/lv_home.
+  WARNING: Cannot find matching snapshot segment for ubuntu-vg/lv_home.
+  [01;31m[Klv_var[m[K       ubuntu-vg -wi-ao----   20.00g                                                     /dev/sdc(0)   
+  [01;31m[Klv_var[m[K       ubuntu-vg -wi-ao----   20.00g                                                     /dev/sdd(0)   
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# ^[[200~df -hT /var~[K[C[1P[1P[1P[1P[1P[2P
+[?2004lFilesystem                    Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-lv_var ext4   20G  2.4G   17G  13% /var
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mdf -hT /home[27mdf -hT /home
+[?2004lFilesystem                     Type  Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-lv_home xfs    10G  604M  9.4G   6% /home
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mgrep -E "(var|home|opt)" /etc/fstab[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgrep -E "(var|home|opt)" /etc/fstab
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l# <file system> <mount point>   <type>  <[01;31m[Kopt[m[Kions>       <dump>  <pass>
+/dev/ubuntu-vg/lv_[01;31m[Kvar[m[K /[01;31m[Kvar[m[K ext4 defaults,noatime 0 2
+/dev/ubuntu-vg/lv_[01;31m[Khome[m[K /[01;31m[Khome[m[K xfs defaults,nodev,nosuid 0 2
+/dev/ubuntu-vg/lv_[01;31m[Kopt[m[K /[01;31m[Kopt[m[K btrfs compress=zstd,noatime,autodefrag 0 2
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mecho "   Файлов в /home: $(ls -1 /home/file*.txt 2>/dev/null | w[27m[7mc[27m[7m -l)"[27m[A]0;root@Otus-PC: ~root@Otus-PC:~# echo "   Файлов в /home: $(ls -1 /home/file*.txt 2>/dev/null | wc -l)"
+[?2004l   Файлов в /home: 20
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mdf -hT /opt 2>/dev/null && echo "Btrfs настроен" || echo "Btrfs [27m[7mн[27m[7mе настроен"[27m[A]0;root@Otus-PC: ~root@Otus-PC:~# df -hT /opt 2>/dev/null && echo "Btrfs настроен" || echo "Btrfs не настроен"
+[?2004lFilesystem                    Type   Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-lv_opt btrfs  5.0G  5.9M  4.5G   1% /opt
+Btrfs настроен
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# exit
+[?2004llogout
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ fin [K[Knnd[K[Kd -name lvm_homework
+[?2004l[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ find -name lvm_homework*
+[?2004lfind: paths must precede expression: `lvm_homework3.log'
+find: possible unquoted pattern after predicate `-name'?
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ find -name lvm_homework*[K3.log 
+[?2004l./lvm_homework3.log
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ find -name lvm_homework3.log [K[K[K[K[K[K2.log [K[K[K[K[K[K.log 
+[?2004l./lvm_homework.log
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ ls -la
+[?2004ltotal 68
+drwxr-x--- 18 vassaya vassaya  4096 Oct 20 14:57 [0m[01;34m.[0m
+drwxr-xr-x  3 root    root     4096 Oct 20 14:48 [01;34m..[0m
+-rw-------  1 vassaya vassaya     0 Oct 20 12:34 .bash_history
+-rw-r--r--  1 vassaya vassaya   220 Mar 31  2024 .bash_logout
+-rw-r--r--  1 vassaya vassaya  3771 Mar 31  2024 .bashrc
+drwx------ 13 vassaya vassaya  4096 Oct 16 12:24 [01;34m.cache[0m
+drwx------ 13 vassaya vassaya  4096 Oct 20 10:51 [01;34m.config[0m
+drwxr-xr-x  3 vassaya vassaya    26 Oct 16 12:28 [01;34mDesktop[0m
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mDocuments[0m
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mDownloads[0m
+drwxrwxr-x  7 vassaya vassaya   119 Oct 16 12:28 [01;34m.git[0m
+-rw-rw-r--  1 vassaya vassaya    58 Oct 16 12:30 .gitconfig
+-rw-------  1 vassaya vassaya    20 Oct 16 12:30 .lesshst
+drwx------  4 vassaya vassaya    32 Oct 16 12:15 [01;34m.local[0m
+-rw-rw-r--  1 vassaya vassaya     0 Oct 20 12:33 lvm_complete_setup.log
+-rw-rw-r--  1 vassaya vassaya 15529 Oct 20 14:43 lvm_homework2.log
+-rw-rw-r--  1 vassaya vassaya 15064 Oct 20 15:09 lvm_homework3.log
+-rw-rw-r--  1 vassaya vassaya     0 Oct 20 10:51 lvm_homework.log
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mMusic[0m
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mPictures[0m
+drwx------  3 vassaya vassaya    19 Oct 16 12:23 [01;34m.pki[0m
+-rw-r--r--  1 vassaya vassaya   807 Mar 31  2024 .profile
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mPublic[0m
+drwx------  7 vassaya vassaya   108 Oct 20 15:00 [01;34msnap[0m
+drwx------  2 vassaya vassaya    29 Oct 16 12:04 [01;34m.ssh[0m
+-rw-r--r--  1 vassaya vassaya     0 Oct 16 12:18 .sudo_as_admin_successful
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mTemplates[0m
+drwxr-xr-x  2 vassaya vassaya     6 Oct 16 12:15 [01;34mVideos[0m
+drwxrwxr-x  4 vassaya vassaya    52 Oct 16 12:24 [01;34m.vscode[0m
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ pwd
+[?2004l/home/vassaya
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ 
