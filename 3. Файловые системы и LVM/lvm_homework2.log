@@ -1,0 +1,188 @@
+Script started on 2025-10-20 14:32:59+00:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+[?2004h]0;vassaya@Otus-PC: ~[01;32mvassaya@Otus-PC[00m:[01;34m~[00m$ [7msudo -i[27msudo -i
+[?2004l[sudo] password for vassaya: 
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# df -h /
+[?2004lFilesystem                   Size  Used Avail Use% Mounted on
+/dev/mapper/vg_root-lv_root   98G  6.8G   87G   8% /
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvremove /dev/ubuntu-vg/ubuntu-lv[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvremove /dev/ubuntu-vg/ubuntu-lv
+[?2004l  Volume group "ubuntu-vg" not found
+  Cannot process volume group ubuntu-vg
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# reboo[K[K[K[K[Kpvg
+[?2004lCommand 'pvg' not found, did you mean:
+  command 'pvs' from deb lvm2 (2.03.16-3ubuntu3.2)
+  command 'pmg' from deb python3-pymatgen (2023.06.23+dfsg1-2build1)
+  command 'pv' from deb pv (1.8.5-1)
+  command 'peg' from deb peg (0.1.18-1)
+  command 'pvm' from deb pvm (3.4.6-5)
+  command 'pig' from deb bsdgames (2.17-30)
+  command 'vg' from deb cgvg (1.6.2-4)
+Try: apt install <deb name>
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# lvs
+[?2004l  LV      VG      Attr       LSize    Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lv_root vg_root -wi-ao---- <100.00g                                                    
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# vgd[Ks
+[?2004l  VG      #PV #LV #SN Attr   VSize    VFree
+  vg_root   1   1   0 wz--n- <100.00g    0 
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# pvs
+[?2004l  PV         VG      Fmt  Attr PSize    PFree
+  /dev/sdb   vg_root lvm2 a--  <100.00g    0 
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# lsblk
+[?2004lNAME              MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+loop0               7:0    0     4K  1 loop /snap/bare/5
+loop1               7:1    0  63.8M  1 loop /snap/core20/2669
+loop2               7:2    0 330.2M  1 loop /snap/code/211
+loop3               7:3    0  73.9M  1 loop /snap/core22/2139
+loop4               7:4    0  73.9M  1 loop /snap/core22/2045
+loop5               7:5    0 245.1M  1 loop /snap/firefox/6565
+loop6               7:6    0 249.2M  1 loop /snap/firefox/7084
+loop7               7:7    0  11.1M  1 loop /snap/firmware-updater/167
+loop8               7:8    0  49.3M  1 loop /snap/snapd/24792
+loop9               7:9    0  18.5M  1 loop /snap/firmware-updater/210
+loop10              7:10   0  91.7M  1 loop /snap/gtk-common-themes/1535
+loop11              7:11   0   516M  1 loop /snap/gnome-42-2204/202
+loop12              7:12   0  10.8M  1 loop /snap/snap-store/1270
+loop13              7:13   0   576K  1 loop /snap/snapd-desktop-integration/315
+loop14              7:14   0  50.8M  1 loop /snap/snapd/25202
+sda                 8:0    0    25G  0 disk 
+├─sda1              8:1    0     1M  0 part 
+└─sda2              8:2    0    25G  0 part 
+sdb                 8:16   0   100G  0 disk 
+└─vg_root-lv_root 252:0    0   100G  0 lvm  /
+sdc                 8:32   0    20G  0 disk 
+sdd                 8:48   0    10G  0 disk 
+sde                 8:64   0    10G  0 disk 
+sr0                11:0    1  1024M  0 rom  
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# vgdisplay 
+[?2004l  --- Volume group ---
+  VG Name               vg_root
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  2
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <100.00 GiB
+  PE Size               4.00 MiB
+  Total PE              25599
+  Alloc PE / Size       25599 / <100.00 GiB
+  Free  PE / Size       0 / 0   
+  VG UUID               EWFm6U-yNRA-udv8-zECE-993b-f2ai-cqM0SJ
+   
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mpvcreate /dev/sdc /dev/sdd /dev/sde[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpvcreate /dev/sdc /dev/sdd /dev/sde
+[?2004l  Physical volume "/dev/sdc" successfully created.
+  Physical volume "/dev/sdd" successfully created.
+  Physical volume "/dev/sde" successfully created.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mvgcreate ubuntu-vg /dev/sdc /dev/sdd /dev/sde[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cvgcreate ubuntu-vg /dev/sdc /dev/sdd /dev/sde
+[?2004l  Volume group "ubuntu-vg" successfully created
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvcreate -n lv_var -L 8G ubuntu-vg[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvcreate -n lv_var -L 8G ubuntu-vg[1@0
+[?2004l  Volume group "ubuntu-vg" has insufficient free space (10237 extents): 20480 required.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# [K]0;root@Otus-PC: ~root@Otus-PC:~# lvcreate -n lv_var -L 80G ubuntu-vg[1P[1P[1@2[1@0
+[?2004l  Logical volume "lv_var" created.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvcreate -n lv_home -L 10G ubuntu-vg[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvcreate -n lv_home -L 10G ubuntu-vg
+[?2004l  Logical volume "lv_home" created.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvcreate -n lv_opt -L 5G ubuntu-vg[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvcreate -n lv_opt -L 5G ubuntu-vg
+[?2004l  Logical volume "lv_opt" created.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkfs.ext4 /dev/ubuntu-vg/lv_var[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.ext4 /dev/ubuntu-vg/lv_var
+[?2004lmke2fs 1.47.0 (5-Feb-2023)
+Creating filesystem with 5242880 4k blocks and 1310720 inodes
+Filesystem UUID: 6f77a24e-10e9-420b-82ed-a91013d28714
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000
+
+Allocating group tables:   0/160       done                            
+Writing inode tables:   0/160       done                            
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information:   0/160       done
+
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkfs.xfs /dev/ubuntu-vg/lv_home[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.xfs /dev/ubuntu-vg/lv_home
+[?2004lCommand 'mkfs.xfs' not found, but can be installed with:
+apt install xfsprogs
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mapt install xfsprogs[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Capt install xfsprogs
+[?2004lReading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+The following package was automatically installed and is no longer required:
+  libllvm19
+Use 'apt autoremove' to remove it.
+The following additional packages will be installed:
+  liburcu8t64
+Suggested packages:
+  xfsdump attr quota
+The following NEW packages will be installed:
+  liburcu8t64 xfsprogs
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 964 kB of archives.
+After this operation, 3,417 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+[33m0% [Working][0m            Get:1 http://ru.archive.ubuntu.com/ubuntu noble/main amd64 liburcu8t64 amd64 0.14.0-3.1build1 [63.0 kB]
+[33m1% [1 liburcu8t64 11.9 kB/63.0 kB 19%][0m[33m                                      15% [Waiting for headers][0m                         Get:2 http://ru.archive.ubuntu.com/ubuntu noble-updates/main amd64 xfsprogs amd64 6.6.0-1ubuntu2.1 [901 kB]
+[33m16% [2 xfsprogs 11.9 kB/901 kB 1%][0m[33m                                  100% [Working][0m              Fetched 964 kB in 1s (1,907 kB/s)
+
+7[0;23r8[1ASelecting previously unselected package liburcu8t64:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 151705 files and directories currently installed.)
+Preparing to unpack .../liburcu8t64_0.14.0-3.1build1_amd64.deb ...
+7[24;0f[42m[30mProgress: [  0%][49m[39m [...................................................................................................] 87[24;0f[42m[30mProgress: [ 11%][49m[39m [##########.........................................................................................] 8Unpacking liburcu8t64:amd64 (0.14.0-3.1build1) ...
+7[24;0f[42m[30mProgress: [ 22%][49m[39m [#####################..............................................................................] 8Selecting previously unselected package xfsprogs.
+Preparing to unpack .../xfsprogs_6.6.0-1ubuntu2.1_amd64.deb ...
+7[24;0f[42m[30mProgress: [ 33%][49m[39m [################################...................................................................] 8Unpacking xfsprogs (6.6.0-1ubuntu2.1) ...
+7[24;0f[42m[30mProgress: [ 44%][49m[39m [###########################################........................................................] 8Setting up liburcu8t64:amd64 (0.14.0-3.1build1) ...
+7[24;0f[42m[30mProgress: [ 56%][49m[39m [#######################################################............................................] 87[24;0f[42m[30mProgress: [ 67%][49m[39m [#################################################################..................................] 8Setting up xfsprogs (6.6.0-1ubuntu2.1) ...
+7[24;0f[42m[30mProgress: [ 78%][49m[39m [#############################################################################......................] 8update-initramfs: deferring update (trigger activated)
+7[24;0f[42m[30mProgress: [ 89%][49m[39m [#######################################################################################............] 8Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.6) ...
+Processing triggers for initramfs-tools (0.142ubuntu25.5) ...
+update-initramfs: Generating /boot/initrd.img-6.14.0-33-generic
+
+7[0;24r8[1A[J[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# apt install xfsprogs[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.xfs /dev/ubuntu-vg/lv_home
+[?2004lmeta-data=/dev/ubuntu-vg/lv_home isize=512    agcount=4, agsize=655360 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=1
+         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=0
+data     =                       bsize=4096   blocks=2621440, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=16384, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkfs.ext4 /dev/ubuntu-vg/lv_home_snap[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkfs.ext4 /dev/ubuntu-vg/lv_home_snap
+[?2004lmke2fs 1.47.0 (5-Feb-2023)
+The file /dev/ubuntu-vg/lv_home_snap does not exist and no size was specified.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# mkfs.ext4 /dev/ubuntu-vg/lv_home_snap
+[?2004lmke2fs 1.47.0 (5-Feb-2023)
+The file /dev/ubuntu-vg/lv_home_snap does not exist and no size was specified.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mlvcreate -L 2G -n lv_home_snap ubuntu-vg[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Clvcreate -L 2G -n lv_home_snap ubuntu-vg
+[?2004l  Logical volume "lv_home_snap" created.
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# lvcreate -L 2G -n lv_home_snap ubuntu-vg[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pmkfs.ext4 /dev/ubuntu-vg/lv_home_snap
+[?2004lmke2fs 1.47.0 (5-Feb-2023)
+Creating filesystem with 524288 4k blocks and 131072 inodes
+Filesystem UUID: cddc06da-b904-48b0-a7b2-884c33a41de5
+Superblock backups stored on blocks: 
+	32768, 98304, 163840, 229376, 294912
+
+Allocating group tables:  0/16     done                            
+Writing inode tables:  0/16     done                            
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information:  0/16     done
+
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# lvs
+[?2004l  LV           VG        Attr       LSize    Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
+  lv_home      ubuntu-vg -wi-a-----   10.00g                                                    
+  lv_home_snap ubuntu-vg -wi-a-----    2.00g                                                    
+  lv_opt       ubuntu-vg -wi-a-----    5.00g                                                    
+  lv_var       ubuntu-vg -wi-a-----   20.00g                                                    
+  lv_root      vg_root   -wi-ao---- <100.00g                                                    
+[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmkdir -p /mnt/{var,home}[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkdir -p /mnt/{var,home}
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmount /dev/ubuntu-vg/lv_var /mnt/var[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmount /dev/ubuntu-vg/lv_var /mnt/var
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mcp -aR /var/* /mnt/var/[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccp -aR /var/* /mnt/var/
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mrm -rf /var/*[27mrm -rf /var/*
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mumount /mnt/var[27mumount /mnt/var
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mmount /dev/ubuntu-vg/lv_home /mnt/home[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmount /dev/ubuntu-vg/lv_home /mnt/home
+[?2004l[?2004h]0;root@Otus-PC: ~root@Otus-PC:~# [7mcp -aR /home/* /mnt/home/[27m[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccp -aR /home/* /mnt/home/
+[?2004l

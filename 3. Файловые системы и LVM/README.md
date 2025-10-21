@@ -1,232 +1,289 @@
-Документация: Работа с RAID 5 в Linux
-
+Документация: Работа с LVM (Logical Volume Manager)
 1. Введение
 Назначение
 
-Данный документ описывает процесс создания, настройки и управления программным RAID 5 массивом в Linux с использованием утилиты mdadm.
+Данный документ описывает полный процесс работы с LVM в Linux, включая миграцию системы на LVM, создание томов, снапшотов и работу с различными файловыми системами.
 Целевая аудитория
 
     Системные администраторы
+
     DevOps инженеры
+
     Специалисты по хранению данных
 
 Обзор
 
-Процесс включает создание RAID 5 массива, тестирование отказоустойчивости, создание разделов и файловых систем, настройку автоматического монтирования.
+Процесс включает три основных этапа:
+
+    Миграция корневой файловой системы на LVM
+
+    Создание и настройка томов для /var, /home, /opt
+
+    Работа со снапшотами и различными файловыми системами
 
 2. Предварительная информация
 Аппаратная конфигурация
 
-    Системный диск: /dev/sda (100GB)
-    Диски для RAID: /dev/sdb, /dev/sdc, /dev/sdd, /dev/sde, /dev/sdf (по 1GB каждый)
-    Общее количество дисков в RAID: 5
-    Тип RAID: RAID 5
+    Системный диск: /dev/sda (25GB)
 
-Программное обеспечение
+    Диск для LVM: /dev/sdb (100GB)
 
-    Утилита управления RAID: mdadm
-    Утилита разделов: parted
-    Файловая система: ext4
+    Дополнительные диски: /dev/sdc (20GB), /dev/sdd (10GB), /dev/sde (10GB)
 
-3. Создание RAID 5 массива
-3.1. Запуск скрипта создания RAID
+Исходное состояние системы
+text
+
+Файловая система: 30% использовано (6.8GB из 25GB)
+Тип ФС: ext4 на /dev/sda2
+
+3. Этап 1: Миграция системы на LVM
+3.1. Создание физического тома и группы томов
 bash
 
-sudo ./create_raid5.sh
+pvcreate /dev/sdb
+vgcreate vg_root /dev/sdb
+lvcreate -n lv_root -l +100%FREE /dev/vg_root
 
-3.2. Параметры созданного RAID
-
-    Устройство: /dev/md0
-    Уровень: RAID 5
-    Размер чанка: 512K
-    Метаданные: версия 1.2
-    Алгоритм: 2 (left-symmetric)
-    Размер массива: 3.99 GiB (4.29 GB)
-
-3.3. Инициализация файловой системы
+3.2. Создание файловой системы и копирование данных
 bash
 
-mke2fs 1.47.0 (5-Feb-2023)
-Creating filesystem with 1046528 4k blocks and 261632 inodes
-Filesystem UUID: 0782f6e1-54ef-4a3b-8664-f59e2a6a8849
+mkfs.ext4 /dev/vg_root/lv_root
+mount /dev/vg_root/lv_root /mnt
+rsync -avxHAX --progress / /mnt/
 
-4. Проверка состояния RAID
-4.1. Просмотр статуса массива
+3.3. Подготовка chroot окружения
 bash
 
-cat /proc/mdstat
+for i in /proc /sys /dev /run /boot; do
+    mount --bind /$i /mnt/$i
+done
+chroot /mnt
+
+3.4. Обновление загрузчика
+bash
+
+grub-mkconfig -o /boot/grub/grub.cfg
+update-initramfs -u
+
+3.5. Результат миграции
+
+    Новая корневая ФС: /dev/mapper/vg_root-lv_root
+
+    Размер: 100GB (увеличение с 25GB)
+
+    Использование: 8% (6.8GB)
+
+4. Этап 2: Создание дополнительных томов
+4.1. Подготовка физических томов
+bash
+
+pvcreate /dev/sdc /dev/sdd /dev/sde
+vgcreate ubuntu-vg /dev/sdc /dev/sdd /dev/sde
+
+4.2. Создание логических томов
+bash
+
+lvcreate -n lv_var -L 20G ubuntu-vg    # Для /var
+lvcreate -n lv_home -L 10G ubuntu-vg   # Для /home  
+lvcreate -n lv_opt -L 5G ubuntu-vg     # Для /opt
+
+4.3. Создание файловых систем
+bash
+
+mkfs.ext4 /dev/ubuntu-vg/lv_var        # ext4 для /var
+mkfs.xfs /dev/ubuntu-vg/lv_home        # XFS для /home
+
+4.4. Установка необходимых пакетов
+bash
+
+apt install xfsprogs    # Для XFS
+apt install btrfs-progs # Для Btrfs
+
+5. Этап 3: Перенос данных и настройка монтирования
+5.1. Перенос /var
+bash
+
+mkdir -p /mnt/var
+mount /dev/ubuntu-vg/lv_var /mnt/var
+cp -aR /var/* /mnt/var/
+rm -rf /var/*
+umount /mnt/var
+
+5.2. Перенос /home
+bash
+
+mkdir -p /mnt/home  
+mount /dev/ubuntu-vg/lv_home /mnt/home
+cp -aR /home/* /mnt/home/
+
+5.3. Настройка /etc/fstab
+text
+
+/dev/ubuntu-vg/lv_var /var ext4 defaults,noatime 0 2
+/dev/ubuntu-vg/lv_home /home xfs defaults,nodev,nosuid 0 2
+/dev/ubuntu-vg/lv_opt /opt btrfs compress=zstd,noatime,autodefrag 0 2
+
+6. Работа со снапшотами
+6.1. Создание снапшота для /home
+bash
+
+lvcreate -L 2G -n lv_home_snap ubuntu-vg
+mkfs.ext4 /dev/ubuntu-vg/lv_home_snap
+
+6.2. Проверка снапшотов
+bash
+
+lvs | grep snap
 
 Результат:
 text
 
-md0 : active raid5 sdf[5] sde[3] sdd[2] sdc[1] sdb[0]
-      4186112 blocks super 1.2 level 5, 512k chunk, algorithm 2 [5/5] [UUUUU]
+lv_home_snap ubuntu-vg -wi-a----- 2.00g
 
-4.2. Детальная информация о массиве
+7. Настройка Btrfs для /opt
+7.1. Создание файловой системы Btrfs
 bash
 
-sudo mdadm -D /dev/md0
+mkfs.btrfs -f /dev/ubuntu-vg/lv_opt
 
-5. Тестирование отказоустойчивости
-5.1. Имитация сбоя диска
+7.2. Монтирование с оптимизациями
 bash
 
-sudo mdadm /dev/md0 --fail /dev/sde
+mount -o compress=zstd,noatime,autodefrag /dev/ubuntu-vg/lv_opt /opt
 
-5.2. Проверка состояния после сбоя
+7.3. Работа с субволюмами Btrfs
 bash
 
-cat /proc/mdstat
+btrfs subvolume create /opt/data
+btrfs subvolume snapshot /opt/data /opt/data_snapshot
+btrfs subvolume list /opt
 
-Результат:
+8. Итоговая конфигурация
+8.1. Структура томов
 text
 
-[5/4] [UUU_U]  # Один диск помечен как faulty
+vg_root (100GB)
+└── lv_root (100GB) - ext4 - /
 
-5.3. Удаление сбойного диска
-bash
+ubuntu-vg (40GB)
+├── lv_var (20GB) - ext4 - /var
+├── lv_home (10GB) - XFS - /home  
+├── lv_opt (5GB) - Btrfs - /opt
+└── lv_home_snap (2GB) - ext4 - снапшот
 
-sudo mdadm /dev/md0 --remove /dev/sde
-
-5.4. Добавление диска обратно в массив
-bash
-
-sudo mdadm /dev/md0 --add /dev/sde
-
-5.5. Мониторинг восстановления
-bash
-
-cat /proc/mdstat
-
-Результат восстановления:
+8.2. Состояние файловых систем
 text
 
-[===========>.........] recovery = 55.2% (578168/1046528)
+/    - 98G, 4.0G used (5%) - ext4
+/var - 20G, 2.4G used (13%) - ext4  
+/home - 10G, 604M used (6%) - XFS
+/opt - 5.0G, 5.9M used (1%) - Btrfs
 
-6. Работа с разделами на RAID массиве
-6.1. Создание GPT разметки
+8.3. Проверка данных
+
+    Файлов в /home: 20 тестовых файлов
+
+    Btrfs настроен: Да, с субволюмами
+
+    Снапшоты: lv_home_snap (2GB)
+
+9. Ключевые команды управления LVM
+9.1. Мониторинг
 bash
 
-sudo parted /dev/md0 mklabel gpt
+pvs                    # Физические тома
+vgs                    # Группы томов  
+lvs                    # Логические тома
+lsblk                  # Блочные устройства
+df -hT                 # Файловые системы
 
-6.2. Создание разделов
+9.2. Создание томов
 bash
 
-sudo parted /dev/md0 mkpart part1 0% 20%
-sudo parted /dev/md0 mkpart part2 20% 40%
-sudo parted /dev/md0 mkpart part3 40% 60%
-sudo parted /dev/md0 mkpart part4 60% 80%
-sudo parted /dev/md0 mkpart part5 80% 100%
+pvcreate /dev/sdX      # Создать физический том
+vgcreate vg_name /dev/sdX # Создать группу томов
+lvcreate -n lv_name -L size vg_name # Создать логический том
 
-6.3. Информация о разделах
-text
-
-Number  Start   End     Size   File system  Name
-1      2097kB  858MB   856MB               part1
-2      858MB   1715MB  858MB               part2
-3      1715MB  2571MB  856MB               part3
-4      2571MB  3429MB  858MB               part4
-5      3429MB  4284MB  856MB               part5
-
-7. Создание файловых систем
-7.1. Форматирование разделов в ext4
+9.3. Снапшоты
 bash
 
-sudo mkfs.ext4 /dev/md0p1
-sudo mkfs.ext4 /dev/md0p2
-sudo mkfs.ext4 /dev/md0p3
-sudo mkfs.ext4 /dev/md0p4
-sudo mkfs.ext4 /dev/md0p5
+lvcreate -L size -n snap_name -s /dev/vg/lv_original # Создать снапшот
 
-7.2. UUID созданных файловых систем
-
-    /dev/md0p1: 53d114f2-edda-4b3a-ab2c-49cbf534f2d7
-    /dev/md0p2: 6d7a4bf1-e2f5-4c82-a172-b468f49c1b82
-    /dev/md0p3: df242000-29e4-4853-adb4-35066c6f340b
-    /dev/md0p4: 6cd6e172-4116-4cf0-917b-b277f8a29965
-    /dev/md0p5: 780f4835-1551-4c0c-aa0f-dbaa92b78b91
-
-8. Настройка монтирования
-8.1. Создание точек монтирования
+9.4. Изменение размеров
 bash
 
-sudo mkdir -p /raid/part{1,2,3,4,5}
+lvextend -L +size /dev/vg/lv_name # Увеличить том
+lvreduce -L -size /dev/vg/lv_name # Уменьшить том
 
-8.2. Настройка /etc/fstab
+10. Особенности файловых систем
+10.1. Ext4
+
+    Использование: /, /var
+
+    Преимущества: Надежность, journaling
+
+    Настройки: defaults, noatime
+
+10.2. XFS
+
+    Использование: /home
+
+    Преимущества: Высокая производительность для больших файлов
+
+    Настройки: defaults, nodev, nosuid
+
+10.3. Btrfs
+
+    Использование: /opt
+
+    Преимущества: Снапшоты, компрессия, субволюмы
+
+    Настройки: compress=zstd, noatime, autodefrag
+
+11. Рекомендации
+11.1. Безопасность
+
+    Используйте nodev,nosuid для пользовательских разделов (/home)
+
+    Регулярно создавайте снапшоты важных данных
+
+    Настройте мониторинг использования пространства
+
+11.2. Производительность
+
+    Используйте noatime для уменьшения нагрузки на диск
+
+    Применяйте компрессию для Btrfs томов
+
+    Выбирайте файловую систему в зависимости от нагрузки
+
+11.3. Резервное копирование
 bash
 
-sudo nano /etc/fstab
+# Создание снапшота для бэкапа
+lvcreate -L 2G -n backup_snap -s /dev/ubuntu-vg/lv_home
 
-8.3. Монтирование разделов
-bash
+12. Часто задаваемые вопросы (FAQ)
+Q: Почему выбраны разные файловые системы?
 
-for i in $(seq 1 5); do sudo mount /dev/md0p$i /raid/part$i; done
+A: Каждая ФС имеет свои преимущества: ext4 - надежность, XFS - производительность, Btrfs - современные функции.
+Q: Как увеличить том при нехватке места?
 
-9. Структура RAID массива
-9.1. Итоговая структура
-text
+A: Используйте lvextend, затем resize2fs для ext4 или xfs_growfs для XFS.
+Q: Как создать новый снапшот?
 
-/dev/md0 (RAID 5, 3.99 GiB)
-├── /dev/md0p1 (856MB, ext4) → /raid/part1
-├── /dev/md0p2 (858MB, ext4) → /raid/part2
-├── /dev/md0p3 (856MB, ext4) → /raid/part3
-├── /dev/md0p4 (858MB, ext4) → /raid/part4
-└── /dev/md0p5 (856MB, ext4) → /raid/part5
+A: lvcreate -L size -n snap_name -s /dev/vg/lv_original
+Q: Что делать при проблемах с загрузкой?
 
-10. Ключевые команды управления
-10.1. Мониторинг
-bash
-
-cat /proc/mdstat                    # Статус RAID массивов
-sudo mdadm -D /dev/md0              # Детальная информация
-sudo lsblk -f /dev/md0              # Информация о разделах и ФС
-
-10.2. Управление дисками
-bash
-
-sudo mdadm /dev/md0 --fail /dev/sde     # Пометить диск как сбойный
-sudo mdadm /dev/md0 --remove /dev/sde   # Удалить диск из массива
-sudo mdadm /dev/md0 --add /dev/sde      # Добавить диск в массив
-
-10.3. Работа с разделами
-bash
-
-sudo parted /dev/md0 mklabel gpt        # Создать GPT разметку
-sudo parted /dev/md0 mkpart ...         # Создать раздел
-sudo parted /dev/md0 print              # Показать разделы
-
-11. Часто задаваемые вопросы (FAQ)
-Q: Почему требуется использовать sudo для большинства команд?
-A: Работа с блочными устройствами и RAID массивами требует привилегий суперпользователя.
-
-Q: Что означает статус [UUU_U] в /proc/mdstat?
-A: Это показывает состояние дисков в массиве: U - активен, _ - отсутствует/сбойный.
-
-Q: Как долго длится восстановление RAID?
-A: Время восстановления зависит от размера дисков и нагрузки на систему. В данном случае восстановление заняло несколько минут.
-
-Q: Можно ли использовать RAID массив без разделов?
-A: Да, можно создать файловую систему непосредственно на /dev/md0, но разделы обеспечивают лучшую организацию данных.
-
-Q: Как обеспечить автоматический запуск RAID при загрузке
-A: Необходимо сохранить конфигурацию с помощью mdadm --detail --scan >> /etc/mdadm/mdadm.conf
-
-12. Рекомендации
-
-    Регулярно проверяйте состояние RAID с помощью cat /proc/mdstat и mdadm -D
-    Настройте мониторинг для автоматического оповещения о сбоях дисков
-    Создавайте резервные копии конфигурации RAID:
-    bash
-
-sudo mdadm --detail --scan > /etc/mdadm/mdadm.conf
-
-    Тестируйте процедуру восстановления на тестовой среде перед использованием в production
-    Используйте journaling файловые системы (как ext4) для повышения надежности
-
+A: Используйте LiveCD и восстановите конфигурацию LVM через vgchange -ay.
 13. Контакты и поддержка
 
-Для решения проблем с RAID массивами обратитесь к:
+Для решения проблем с LVM обратитесь к:
 
-    Документации mdadm: man mdadm
-    Официальной документации дистрибутива Linux
-    Форумам и сообществам системных администраторов
+    Документации LVM: man lvm
+
+    Официальной документации дистрибутива
+
+    Форумам системных администраторов
+
+Статус выполнения: Все задачи успешно выполнены, система мигрирована на LVM с оптимальной конфигурацией томов и файловых систем.
