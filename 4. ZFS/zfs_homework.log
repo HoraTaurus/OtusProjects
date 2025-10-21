@@ -1,0 +1,231 @@
+vassaya@Otus-PC:~$ script -a zfs_homework.log
+Script started, output log file is 'zfs_homework.log'.
+vassaya@Otus-PC:~$ sudo -i
+[sudo] password for vassaya: 
+root@Otus-PC:~# sudo apt update
+Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:2 http://ru.archive.ubuntu.com/ubuntu noble InRelease
+Hit:3 http://ru.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://ru.archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+7 packages can be upgraded. Run 'apt list --upgradable' to see them.
+root@Otus-PC:~# sudo apt install zfsutils-linux -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+zfsutils-linux is already the newest version (2.2.2-0ubuntu9.4).
+The following package was automatically installed and is no longer required:
+  libllvm19
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 7 not upgraded.
+root@Otus-PC:~# lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+loop0    7:0    0     4K  1 loop /snap/bare/5
+loop1    7:1    0 330.2M  1 loop /snap/code/211
+loop2    7:2    0  55.5M  1 loop /snap/core18/2952
+loop3    7:3    0  73.9M  1 loop /snap/core22/2045
+loop4    7:4    0  63.8M  1 loop /snap/core20/2669
+loop5    7:5    0  73.9M  1 loop /snap/core22/2139
+loop6    7:6    0 245.1M  1 loop /snap/firefox/6565
+loop7    7:7    0  18.5M  1 loop /snap/firmware-updater/210
+loop8    7:8    0  11.1M  1 loop /snap/firmware-updater/167
+loop9    7:9    0 164.8M  1 loop /snap/gnome-3-28-1804/198
+loop10   7:10   0 249.2M  1 loop /snap/firefox/7084
+loop11   7:11   0   516M  1 loop /snap/gnome-42-2204/202
+loop12   7:12   0  62.2M  1 loop /snap/github-gui/2
+loop13   7:13   0  50.8M  1 loop /snap/snapd/25202
+loop14   7:14   0   576K  1 loop /snap/snapd-desktop-integration/315
+loop15   7:15   0  91.7M  1 loop /snap/gtk-common-themes/1535
+loop16   7:16   0  10.8M  1 loop /snap/snap-store/1270
+loop17   7:17   0  50.9M  1 loop /snap/snapd/25577
+loop18   7:18   0  64.7M  1 loop /snap/sublime-text/217
+sda      8:0    0    25G  0 disk 
+├─sda1   8:1    0     1M  0 part 
+└─sda2   8:2    0    25G  0 part /
+sdb      8:16   0   512M  0 disk 
+sdc      8:32   0   512M  0 disk 
+sdd      8:48   0   512M  0 disk 
+sde      8:64   0   512M  0 disk 
+sdf      8:80   0   512M  0 disk 
+sdg      8:96   0   512M  0 disk 
+sdh      8:112  0   512M  0 disk 
+sdi      8:128  0   512M  0 disk 
+sr0     11:0    1  1024M  0 rom  
+root@Otus-PC:~# zpool create otus1 mirror /dev/sdb /dev/sdc
+root@Otus-PC:~# zpool create otus2 mirror /dev/sdd /dev/sde
+root@Otus-PC:~# zpool create otus3 mirror /dev/sdf /dev/sdg
+root@Otus-PC:~# zpool create otus4 mirror /dev/sdh /dev/sdi
+root@Otus-PC:~# zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+otus1   480M   108K   480M        -         -     3%     0%  1.00x    ONLINE  -
+otus2   480M   494K   480M        -         -     3%     0%  1.00x    ONLINE  -
+otus3   480M   106K   480M        -         -     3%     0%  1.00x    ONLINE  -
+otus4   480M   106K   480M        -         -     3%     0%  1.00x    ONLINE  -
+root@Otus-PC:~# zfs set compression=lzjb otus1
+root@Otus-PC:~# zfs set compression=lz4 otus2
+root@Otus-PC:~# zfs set compression=gzip-9 otus3
+root@Otus-PC:~# zfs set compression=zle otus4
+root@Otus-PC:~# zfs get all | grep compression | grep -v ref
+otus1  compression           lzjb                   local
+otus2  compression           lz4                    local
+otus3  compression           gzip-9                 local
+otus4  compression           zle                    local
+root@Otus-PC:~# for i in {1..4}; do
+  wget -P /otus$i https://gutenberg.org/cache/epub/2600/pg2600.converter.log
+done
+--2025-10-21 11:44:52--  https://gutenberg.org/cache/epub/2600/pg2600.converter.log
+Resolving gutenberg.org (gutenberg.org)... 152.19.134.47, 2610:28:3090:3000:0:bad:cafe:47
+Connecting to gutenberg.org (gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 41181808 (39M) [text/plain]
+Saving to: ‘/otus1/pg2600.converter.log’
+
+pg2600.converter.lo 100%[===================>]  39.27M  6.78MB/s    in 6.5s    
+
+2025-10-21 11:44:59 (6.06 MB/s) - ‘/otus1/pg2600.converter.log’ saved [41181808/41181808]
+
+--2025-10-21 11:44:59--  https://gutenberg.org/cache/epub/2600/pg2600.converter.log
+Resolving gutenberg.org (gutenberg.org)... 152.19.134.47, 2610:28:3090:3000:0:bad:cafe:47
+Connecting to gutenberg.org (gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 41181808 (39M) [text/plain]
+Saving to: ‘/otus2/pg2600.converter.log’
+
+pg2600.converter.lo 100%[===================>]  39.27M  7.44MB/s    in 5.9s    
+
+2025-10-21 11:45:06 (6.65 MB/s) - ‘/otus2/pg2600.converter.log’ saved [41181808/41181808]
+
+--2025-10-21 11:45:06--  https://gutenberg.org/cache/epub/2600/pg2600.converter.log
+Resolving gutenberg.org (gutenberg.org)... 152.19.134.47, 2610:28:3090:3000:0:bad:cafe:47
+Connecting to gutenberg.org (gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 41181808 (39M) [text/plain]
+Saving to: ‘/otus3/pg2600.converter.log’
+
+pg2600.converter.lo 100%[===================>]  39.27M  5.16MB/s    in 9.4s    
+
+2025-10-21 11:45:16 (4.17 MB/s) - ‘/otus3/pg2600.converter.log’ saved [41181808/41181808]
+
+--2025-10-21 11:45:16--  https://gutenberg.org/cache/epub/2600/pg2600.converter.log
+Resolving gutenberg.org (gutenberg.org)... 152.19.134.47, 2610:28:3090:3000:0:bad:cafe:47
+Connecting to gutenberg.org (gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 41181808 (39M) [text/plain]
+Saving to: ‘/otus4/pg2600.converter.log’
+
+pg2600.converter.lo 100%[===================>]  39.27M  8.05MB/s    in 5.7s    
+
+2025-10-21 11:45:22 (6.90 MB/s) - ‘/otus4/pg2600.converter.log’ saved [41181808/41181808]
+
+root@Otus-PC:~# ls -l /otus*
+/otus1:
+total 22114
+-rw-r--r-- 1 root root 41181808 Oct  2 07:31 pg2600.converter.log
+
+/otus2:
+total 18015
+-rw-r--r-- 1 root root 41181808 Oct  2 07:31 pg2600.converter.log
+
+/otus3:
+total 10970
+-rw-r--r-- 1 root root 41181808 Oct  2 07:31 pg2600.converter.log
+
+/otus4:
+total 40249
+-rw-r--r-- 1 root root 41181808 Oct  2 07:31 pg2600.converter.log
+root@Otus-PC:~# zfs list
+NAME    USED  AVAIL  REFER  MOUNTPOINT
+otus1  21.7M   330M  21.6M  /otus1
+otus2  17.7M   334M  17.6M  /otus2
+otus3  10.8M   341M  10.7M  /otus3
+otus4  39.4M   313M  39.3M  /otus4
+root@Otus-PC:~# zfs get all | grep compressratio | grep -v ref
+otus1  compressratio         1.82x                  -
+otus2  compressratio         2.23x                  -
+otus3  compressratio         3.67x                  -
+otus4  compressratio         1.00x                  -
+root@Otus-PC:~# wget -O archive.tar.gz --no-check-certificate 'https://drive.usercontent.google.com/download?id=1MvrcEp-WgAQe57aDEzxSRalPAwbNN1Bb&export=download'
+tar -xzvf archive.tar.gz
+--2025-10-21 11:48:54--  https://drive.usercontent.google.com/download?id=1MvrcEp-WgAQe57aDEzxSRalPAwbNN1Bb&export=download
+Resolving drive.usercontent.google.com (drive.usercontent.google.com)... 173.194.222.132, 2a00:1450:4010:c0b::84
+Connecting to drive.usercontent.google.com (drive.usercontent.google.com)|173.194.222.132|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 7275140 (6.9M) [application/octet-stream]
+Saving to: ‘archive.tar.gz’
+
+archive.tar.gz      100%[===================>]   6.94M  8.85MB/s    in 0.8s    
+
+2025-10-21 11:49:01 (8.85 MB/s) - ‘archive.tar.gz’ saved [7275140/7275140]
+
+zpoolexport/
+zpoolexport/filea
+zpoolexport/fileb
+root@Otus-PC:~# zpool import -d zpoolexport/
+   pool: otus
+     id: 6554193320433390805
+  state: ONLINE
+status: Some supported features are not enabled on the pool.
+	(Note that they may be intentionally disabled if the
+	'compatibility' property is set.)
+ action: The pool can be imported using its name or numeric identifier, though
+	some features will not be available without an explicit 'zpool upgrade'.
+ config:
+
+	otus                         ONLINE
+	  mirror-0                   ONLINE
+	    /root/zpoolexport/filea  ONLINE
+	    /root/zpoolexport/fileb  ONLINE
+root@Otus-PC:~# zpool import -d zpoolexport/ otus
+root@Otus-PC:~# zpool status otus
+  pool: otus
+ state: ONLINE
+status: Some supported and requested features are not enabled on the pool.
+	The pool can still be used, but some features are unavailable.
+action: Enable all features using 'zpool upgrade'. Once this is done,
+	the pool may no longer be accessible by software that does not support
+	the features. See zpool-features(7) for details.
+config:
+
+	NAME                         STATE     READ WRITE CKSUM
+	otus                         ONLINE       0     0     0
+	  mirror-0                   ONLINE       0     0     0
+	    /root/zpoolexport/filea  ONLINE       0     0     0
+	    /root/zpoolexport/fileb  ONLINE       0     0     0
+
+errors: No known data errors
+root@Otus-PC:~# zfs get available otus
+NAME  PROPERTY   VALUE  SOURCE
+otus  available  350M   -
+root@Otus-PC:~# zfs get readonly otus
+NAME  PROPERTY  VALUE   SOURCE
+otus  readonly  off     default
+root@Otus-PC:~# zfs get recordsize otus
+NAME  PROPERTY    VALUE    SOURCE
+otus  recordsize  128K     local
+root@Otus-PC:~# zfs get compression otus
+NAME  PROPERTY     VALUE           SOURCE
+otus  compression  zle             local
+root@Otus-PC:~# zfs get checksum otus
+NAME  PROPERTY  VALUE      SOURCE
+otus  checksum  sha256     local
+root@Otus-PC:~# wget -O otus_task2.file --no-check-certificate 'https://drive.usercontent.google.com/download?id=1wgxjih8YZ-cqLqaZVa0lA3h3Y029c3oI&export=download'
+--2025-10-21 11:51:52--  https://drive.usercontent.google.com/download?id=1wgxjih8YZ-cqLqaZVa0lA3h3Y029c3oI&export=download
+Resolving drive.usercontent.google.com (drive.usercontent.google.com)... 173.194.222.132, 2a00:1450:4010:c0b::84
+Connecting to drive.usercontent.google.com (drive.usercontent.google.com)|173.194.222.132|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5432736 (5.2M) [application/octet-stream]
+Saving to: ‘otus_task2.file’
+
+otus_task2.file     100%[===================>]   5.18M  11.4MB/s    in 0.5s    
+
+2025-10-21 11:51:55 (11.4 MB/s) - ‘otus_task2.file’ saved [5432736/5432736]
+
+root@Otus-PC:~# zfs receive otus/test@today < otus_task2.file
+root@Otus-PC:~# find /otus/test -name "secret_message"
+/otus/test/task1/file_mess/secret_message
+root@Otus-PC:~# cat /otus/test/task1/file_mess/secret_message
+https://otus.ru/lessons/linux-hl/
+
+
