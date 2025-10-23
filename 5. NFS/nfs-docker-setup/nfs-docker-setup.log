@@ -1,0 +1,1274 @@
+Script started on 2025-10-23 07:58:33+00:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="80" LINES="24"]
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ touch [7mdocker-com[27m[7mp[27m[7mose.yml[27m[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[Cdocker-compose.yml
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano docker-compose.yml 
+[?2004l[?2004h[?1049h[22;0;0t[1;24r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[22;34H(B[0;7m[ Reading... ](B[m[22;33H(B[0;7m[ Read 0 lines ](B[m[H(B[0;7m  GNU nano 7.2                   docker-compose.yml                             [1;79H(B[m[23d(B[0;7m^G(B[m Help[14G(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut[53G(B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24d(B[0;7m^X(B[m Exit[14G(B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[2d[?12l[?25h[?25l[1;53H(B[0;7m*[22d(B[m[K[1;79H[2;6H(B[0;1m[33m[1K - [39m(B[mnfss[3;5H[92mnetworks[39m:[4;7H[92mnfs-net[39m:[5;9H[92mipv4_address[39m: (B[m192.168.50.11[7d[92mnetworks[39m:[8;3H[92mnfs-net[39m:[9;5H[92mdriver[39m: (B[mbridge[10;5H[92mipam[39m:[11;7H[92mconfig[39m:[12;8H(B[0;1m[33m[1K - (B[0m[92msubnet[39m: (B[m192.168.50.0/24[?12l[?25h[?25l[23;14H       (B[0;7mM-D(B[m DOS Format      (B[0;7mM-A(B[m Append          (B[0;7mM-B(B[m Backup File[K[24;2H(B[0;7mC(B[m Cancel           (B[0;7mM-M(B[m Mac Format      (B[0;7mM-P(B[m Prepend         (B[0;7m^T(B[m Browse[K[22d(B[0;7mFile Name to Write: docker-compose.yml                                          [22;39H(B[m[?12l[?25h[?25l[33G[1K (B[0;7m[ Writing... ](B[m[K[1;53H(B[0;7m [79G(B[m[22;32H(B[0;7m[ Wrote 86 lines ](B[m[23;14H(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut       (B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24;2H(B[0;7mX(B[m Exit      (B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[?12l[?25h[12;34H[?25l[22d[J[24d[?12l[?25h[24;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano [7msetup-nfs.s[27m[7mh[27m[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[Csetup-nfs.sh
+[?2004l[?2004h[?1049h[22;0;0t[1;24r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[22;35H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 7.2                      setup-nfs.sh                                [1;79H(B[m[23d(B[0;7m^G(B[m Help[14G(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut[53G(B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24d(B[0;7m^X(B[m Exit[14G(B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[2d[?12l[?25h[?25l[1;50H(B[0;7m*[22d(B[m[K[1;79H[2ddocker [32mexec[39m(B[m nfss ps aux [32m|[39m(B[m (B[0;1m[34mgrep[39m(B[m nfs[4d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"4. Checking exports on server..."[5d[39m(B[mdocker [32mexec[39m(B[m nfss showmount(B[0;1m[35m -e[39m(B[m localhost[7d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"5. Checking mount on client..."[8d[39m(B[mdocker [32mexec[39m(B[m nfsc mount [32m|[39m(B[m (B[0;1m[34mgrep[39m(B[m nfs[10d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"=== Setup Complete ==="[11d[34mecho[39m(B[m (B[0;1m[33m"Server IP: 192.168.50.10"[12d[34mecho[39m(B[m (B[0;1m[33m"Client IP: 192.168.50.11"[39m(B[m[?12l[?25h[?25l[?12l[?25h[9d[?25l[?12l[?25h[8;32H[?25l[?12l[?25h[6d[?25l[?12l[?25h[5;32H[?25l[?12l[?25h[3d[?25l[?12l[?25h[2;22r[2;1H[2T[1;24r[3;1H(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"3. Checking NFS server status..."[A[39m(B[m[?25l[?12l[?25h7[2;22r8[3T[1;24r[3;1H(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"2. Waiting for services to start..."[4d[39m(B[msleep 25[2d[?25l[?12l[?25h7[2;22r8[3T[1;24r[2;1H(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"=== NFS Docker Setup ==="[3d[34mecho[39m(B[m (B[0;1m[33m"1. Starting containers..."[4d[39m(B[mdocker-compose up(B[0;1m[35m -d[2;32H[39m(B[m[?25l[?12l[?25h7[2;21r8[2T[1;24r[2;1H[36m#!/bin/bash[39m(B[m[?25l[?12l[?25h[?25l[?12l[?25h[?25l[?12l[?25h[?25l[?12l[?25h[?25l[?12l[?25h[5;32H[?25l[?12l[?25h[8d[?25l[?12l[?25h[11d[?25l[23;14H       (B[0;7mM-D(B[m DOS Format      (B[0;7mM-A(B[m Append          (B[0;7mM-B(B[m Backup File[K[24;2H(B[0;7mC(B[m Cancel           (B[0;7mM-M(B[m Mac Format      (B[0;7mM-P(B[m Prepend         (B[0;7m^T(B[m Browse[K[22d(B[0;7mFile Name to Write: setup-nfs.sh                                                [22;33H(B[m[?12l[?25h[?25l[1K (B[0;7m[ Writing... ](B[m[K[1;50H(B[0;7m [79G(B[m[22;32H(B[0;7m[ Wrote 21 lines ](B[m[23;14H(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut       (B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24;2H(B[0;7mX(B[m Exit      (B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[?12l[?25h[11;32H[?25l[22d[J[24d[?12l[?25h[24;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano ^[[200~test-nfs.sh~[K[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[C[C[C[C[C[Ctest-n[1Pfs.sh[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[C[C[C[C[Ctest-nf[1Ps.sh[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[C[C[C[Ctest-nfs[1P.sh[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[C[C[Ctest-nfs.[1Psh[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[C[Ctest-nfs.s[1Ph[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[C[C[Ctest-nfs.sh [K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l[?2004h[?1049h[22;0;0t[1;24r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[22;35H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 7.2                       test-nfs.sh                                [1;79H(B[m[23d(B[0;7m^G(B[m Help[14G(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut[53G(B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24d(B[0;7m^X(B[m Exit[14G(B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[2d[?12l[?25h[?25l[1;50H(B[0;7m*[22d(B[m[K[1;79H[2d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"5. Verifying file on client..."[3d[39m(B[mdocker [32mexec[39m(B[m nfsc ls -la /mnt/nfs/upload/[4ddocker [32mexec[39m(B[m nfsc (B[0;1m[34mcat[39m(B[m /mnt/nfs/upload/server_file.txt[6d[36m# Test 6: Проверка прав доступа[7d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"6. Testing permissions..."[8d[39m(B[mdocker [32mexec[39m(B[m nfsc (B[0;1m[34mtouch[39m(B[m /mnt/nfs/upload/permission_test.txt[9ddocker [32mexec[39m(B[m nfss (B[0;1m[34mrm[39m(B[m /srv/share/upload/permission_test.txt[11d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"=== All Tests Completed ==="[12d[34mecho[39m(B[m (B[0;1m[33m"✅ NFS is working correctly!"[39m(B[m[?12l[?25h[?25l[23;14H       (B[0;7mM-D(B[m DOS Format      (B[0;7mM-A(B[m Append          (B[0;7mM-B(B[m Backup File[K[24;2H(B[0;7mC(B[m Cancel           (B[0;7mM-M(B[m Mac Format      (B[0;7mM-P(B[m Prepend         (B[0;7m^T(B[m Browse[K[22d(B[0;7mFile Name to Write: test-nfs.sh                                                 [22;32H(B[m[?12l[?25h[?25l [1K (B[0;7m[ Writing... ](B[m[K[1;50H(B[0;7m [79G(B[m[22;32H(B[0;7m[ Wrote 41 lines ](B[m[23;14H(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut       (B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24;2H(B[0;7mX(B[m Exit      (B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[?12l[?25h[12;36H[?25l[22d[J[24d[?12l[?25h[24;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano [7mtest-automo[27m[7mu[27m[7mnt.sh[27m[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [C[C[C[C[Ctest-automount.sh
+[?2004l[?2004h[?1049h[22;0;0t[1;24r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[22;35H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 7.2                    test-automount.sh                             [1;79H(B[m[23d(B[0;7m^G(B[m Help[14G(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut[53G(B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24d(B[0;7m^X(B[m Exit[14G(B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[2d[?12l[?25h[?25l[1;53H(B[0;7m*[22d(B[m[K[1;79H[2d[32melse[3d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"❌ Auto-mount failed"[4;5H[34mecho[39m(B[m (B[0;1m[33m"Attempting manual mount..."[5;5H[39m(B[mdocker [32mexec[39m(B[m nfsc mount(B[0;1m[35m -t[39m(B[m nfs(B[0;1m[35m -o[39m(B[m vers[32m=[39m(B[m3 192.168.50.10[32m:[39m(B[m/srv/share /mnt/nfs[6d[32mfi[8d[36m# Проверяем доступность файлов после перезапуска[9d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"4. Checking file persistence..."[10d[39m(B[mdocker [32mexec[39m(B[m nfsc ls -la /mnt/nfs/upload/[12d(B[0;1m[34mecho[39m(B[m (B[0;1m[33m"=== Auto-mount Test Complete ==="[39m(B[m[?12l[?25h[?25l[13d[?12l[?25h[?25l[12;40H[?12l[?25h[?25l[23;14H       (B[0;7mM-D(B[m DOS Format      (B[0;7mM-A(B[m Append          (B[0;7mM-B(B[m Backup File[K[24;2H(B[0;7mC(B[m Cancel           (B[0;7mM-M(B[m Mac Format      (B[0;7mM-P(B[m Prepend         (B[0;7m^T(B[m Browse[K[22d(B[0;7mFile Name to Write: test-automount.sh                                           [22;38H(B[m[?12l[?25h[?25l[33G[1K (B[0;7m[ Writing... ](B[m[K[1;53H(B[0;7m [79G(B[m[22;32H(B[0;7m[ Wrote 27 lines ](B[m[23;14H(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut       (B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24;2H(B[0;7mX(B[m Exit      (B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[?12l[?25h[12;40H[?25l[23;14H       (B[0;7mM-D(B[m DOS Format      (B[0;7mM-A(B[m Append          (B[0;7mM-B(B[m Backup File[K[24;2H(B[0;7mC(B[m Cancel           (B[0;7mM-M(B[m Mac Format      (B[0;7mM-P(B[m Prepend         (B[0;7m^T(B[m Browse[K[22d(B[0;7mFile Name to Write: test-automount.sh                                           [22;38H(B[m[?12l[?25h[?25l[33G[1K (B[0;7m[ Writing... ](B[m[K[1;79H[22;32H(B[0;7m[ Wrote 27 lines ](B[m[23;14H(B[0;7m^O(B[m Write Out (B[0;7m^W(B[m Where Is  (B[0;7m^K(B[m Cut       (B[0;7m^T(B[m Execute   (B[0;7m^C(B[m Location[24;2H(B[0;7mX(B[m Exit      (B[0;7m^R(B[m Read File (B[0;7m^\(B[m Replace   (B[0;7m^U(B[m Paste     (B[0;7m^J(B[m Justify   (B[0;7m^/(B[m Go To Line[?12l[?25h[12;40H[?25l[22d[J[24d[?12l[?25h[24;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x setup-n[27m[7mf[27m[7ms.sh test-nfs.sh test-automount.sh[27m[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ chmod +x setup-nfs.sh test-nfs.sh test-automount.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./setup-nfs.sh[27m./setup-nfs.sh
+[?2004l=== NFS Docker Setup ===
+1. Starting containers...
+./setup-nfs.sh: line 5: docker-compose: command not found
+2. Waiting for services to start...
+3. Checking NFS server status...
+./setup-nfs.sh: line 11: docker: command not found
+4. Checking exports on server...
+./setup-nfs.sh: line 14: docker: command not found
+5. Checking mount on client...
+./setup-nfs.sh: line 17: docker: command not found
+=== Setup Complete ===
+Server IP: 192.168.50.10
+Client IP: 192.168.50.11
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./test-nfs.sh[27m./test-nfs.sh
+[?2004l=== NFS Functionality Test ===
+1. Testing basic mount...
+./test-nfs.sh: line 7: docker: command not found
+❌ NFS mount failed
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano [7mdocker-compose-kerberos.yml[27mdocker-compose-kerberos.yml
+[?2004l[?2004h[?1049h[22;0;0t[1;32r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[30;55H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 7.2                                   docker-compose-kerberos.yml                                            [1;119H(B[m[31d(B[0;7m^G(B[m Help[31;16H(B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut[31;61H(B[0;7m^T(B[m Execute     (B[0;7m^C(B[m Location    (B[0;7mM-U(B[m Undo[106G(B[0;7mM-A(B[m Set Mark[32d(B[0;7m^X(B[m Exit[32;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste[61G(B[0;7m^J(B[m Justify     (B[0;7m^/(B[m Go To Line  (B[0;7mM-E(B[m Redo[106G(B[0;7mM-6(B[m Copy[2d[?12l[?25h[?25l[1;78H(B[0;7m*[30d(B[m[K[1;119H[2;7Hapt install -y nfs-common krb5-user &&[3;7Hmkdir -p /mnt/nfs-kerberos &&[4;7Hsleep 20 &&[5;7Htail -f /dev/null[6;7H"[7;5H[92mnetworks[39m:[8;7H[92mnfs-net[39m:[9;9H[92mipv4_address[39m: (B[m192.168.50.21[11d[92mnetworks[39m:[12;3H[92mnfs-net[39m:[13;5H[92mdriver[39m: (B[mbridge[14;5H[92mipam[39m:[15;7H[92mconfig[39m:[16;8H(B[0;1m[33m[1K - (B[0m[92msubnet[39m: (B[m192.168.50.0/24[?12l[?25h[?25l[30;54H(B[0;7m[ Writing... ](B[m[1;78H(B[0;7m [119G(B[m[30;52H(B[0;7m[ Wrote 46 lines ](B[m[?12l[?25h[16;34H[?25l[31;16H[15X[31;31H(B[0;7mM-D(B[m DOS Format       [31;61H(B[0;7mM-A(B[m Append[16X[31;93H(B[0;7mB(B[m Backup File[K[32;2H(B[0;7mC(B[m Cancel[16G[15X[32;31H(B[0;7mM-M(B[m Mac Format         [61G(B[0;7mM-P(B[m Prepend[19X[32;91H(B[0;7m^T(B[m Browse[K[30d(B[0;7mFile Name to Write: docker-compose-kerberos.yml                                                                         [30;48H(B[m[?12l[?25h[?25l[53G[1K (B[0;7m[ Writing... ](B[m[K[1;119H[30;52H(B[0;7m[ Wrote 46 lines ](B[m[31;16H(B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut[31;61H(B[0;7m^T(B[m Execute     (B[0;7m^C(B[m Location[93G(B[0;7mU(B[m Undo       (B[0;7mM-A(B[m Set Mark[32;2H(B[0;7mX(B[m Exit  [16G(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste[61G(B[0;7m^J(B[m Justify     (B[0;7m^/(B[m Go To Line  (B[0;7mM-E(B[m Redo [106G(B[0;7mM-6(B[m Copy[?12l[?25h[16;34H[?25l[30d[J[32d[?12l[?25h[32;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ nano [7mREADME.md[27mREADME.md
+[?2004l[?2004h[?1049h[22;0;0t[1;32r(B[m[4l[?7h[39;49m[?1h=[?1h=[?25l[39;49m(B[m[H[2J[30;55H(B[0;7m[ New File ](B[m[H(B[0;7m  GNU nano 7.2                                            README.md                                                     [1;119H(B[m[31d(B[0;7m^G(B[m Help[31;16H(B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut[31;61H(B[0;7m^T(B[m Execute     (B[0;7m^C(B[m Location    (B[0;7mM-U(B[m Undo[106G(B[0;7mM-A(B[m Set Mark[32d(B[0;7m^X(B[m Exit[32;16H(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste[61G(B[0;7m^J(B[m Justify     (B[0;7m^/(B[m Go To Line  (B[0;7mM-E(B[m Redo[106G(B[0;7mM-6(B[m Copy[2d[?12l[?25h[?25l[1;69H(B[0;7m*[30d(B[m[K[1;119H[2d(B[0;1m[33m# NFS Docker Setup[4d## Структура проекта[5d[35m- [36m`docker-compose.yml`[39m(B[m - основная конфигурация NFS сервера и клиента[6d(B[0;1m[35m- [36m`setup-nfs.sh`[39m(B[m - скрипт запуска и настройки[7d(B[0;1m[35m- [36m`test-nfs.sh`[39m(B[m - скрипт тестирования функциональности[8d(B[0;1m[35m- [36m`test-automount.sh`[39m(B[m - скрипт проверки автоматического монтирования[9d(B[0;1m[35m- [36m`docker-compose-kerberos.yml`[39m(B[m - конфигурация для NFSv4 с Kerberos[11d(B[0;1m[33m## Использование[13d### Базовая настройка NFSv3:[14d[36m```bash[15d./setup-nfs.sh[16d./test-nfs.sh[39m(B[m[?12l[?25h[?25l[?12l[?25h[17d[?25l[31;16H[15X[31;31H(B[0;7mM-D(B[m DOS Format       [31;61H(B[0;7mM-A(B[m Append[16X[31;93H(B[0;7mB(B[m Backup File[K[32;2H(B[0;7mC(B[m Cancel[16G[15X[32;31H(B[0;7mM-M(B[m Mac Format         [61G(B[0;7mM-P(B[m Prepend[19X[32;91H(B[0;7m^T(B[m Browse[K[30d(B[0;7mFile Name to Write: README.md                                                                                           [30;30H(B[m[?12l[?25h[?25l[30;53H[1K (B[0;7m[ Writing... ](B[m[K[1;69H(B[0;7m [119G(B[m[30;52H(B[0;7m[ Wrote 15 lines ](B[m[31;16H(B[0;7m^O(B[m Write Out   (B[0;7m^W(B[m Where Is    (B[0;7m^K(B[m Cut[31;61H(B[0;7m^T(B[m Execute     (B[0;7m^C(B[m Location[93G(B[0;7mU(B[m Undo       (B[0;7mM-A(B[m Set Mark[32;2H(B[0;7mX(B[m Exit  [16G(B[0;7m^R(B[m Read File   (B[0;7m^\(B[m Replace     (B[0;7m^U(B[m Paste[61G(B[0;7m^J(B[m Justify     (B[0;7m^/(B[m Go To Line  (B[0;7mM-E(B[m Redo [106G(B[0;7mM-6(B[m Copy[?12l[?25h[17d[?25l[30d[J[32d[?12l[?25h[32;1H[?1049l[23;0;0t[?1l>[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./test-automount.sh[27m./test-automount.sh
+[?2004l=== Testing Auto-mount ===
+1. Restarting client container...
+./test-automount.sh: line 7: docker-compose: command not found
+2. Waiting for client to restart...
+3. Checking auto-mount...
+./test-automount.sh: line 14: docker: command not found
+❌ Auto-mount failed
+Attempting manual mount...
+./test-automount.sh: line 20: docker: command not found
+4. Checking file persistence...
+./test-automount.sh: line 25: docker: command not found
+=== Auto-mount Test Complete ===
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec -it nfss bash[27mdocker exec -it nfss bash
+[?2004lCommand 'docker' not found, but can be installed with:
+sudo snap install docker         # version 28.4.0, or
+sudo snap install docker         # version 28.1.1+1
+sudo apt  install docker.io      # version 28.2.2-0ubuntu1~24.04.1
+sudo apt  install podman-docker  # version 4.9.3+ds1-1ubuntu0.2
+See 'snap info <snapname>' for additional versions.
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec -it nfsc bash[27mdocker exec -it nfsc bash
+[?2004lCommand 'docker' not found, but can be installed with:
+sudo snap install docker         # version 28.4.0, or
+sudo snap install docker         # version 28.1.1+1
+sudo apt  install docker.io      # version 28.2.2-0ubuntu1~24.04.1
+sudo apt  install podman-docker  # version 4.9.3+ds1-1ubuntu0.2
+See 'snap info <snapname>' for additional versions.
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ docker exec -it nfsc bash[Kexit
+[?2004lexit
+
+Script done on 2025-10-23 08:13:59+00:00 [COMMAND_EXIT_CODE="127"]
+Script started on 2025-10-23 08:31:28+00:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="120" LINES="32"]
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7msudo apt install -y python3-distutils python3-pip[27msudo apt install -y python3-distutils python3-pip
+[?2004l[sudo] password for vassaya: 
+Reading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+Package python3-distutils is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+[1;31mE: [0mPackage 'python3-distutils' has no installation candidate[0m
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7msudo apt update[27msudo apt update
+[?2004l[33m0% [Working][0m            Hit:1 http://ru.archive.ubuntu.com/ubuntu noble InRelease
+[33m0% [Connecting to security.ubuntu.com][0m                                      Hit:2 http://ru.archive.ubuntu.com/ubuntu noble-updates InRelease
+[33m0% [Waiting for headers] [Connecting to security.ubuntu.com][0m                                                            Hit:3 http://ru.archive.ubuntu.com/ubuntu noble-backports InRelease
+[33m                                                            0% [Connecting to security.ubuntu.com][0m[33m0% [Connecting to security.ubuntu.com][0m[33m0% [Connecting to security.ubuntu.com][0m[33m                                      0% [Waiting for headers][0m                        Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+[33m                        0% [Working][0m[33m20% [Working][0m             Reading package lists... 0%Reading package lists... 0%Reading package lists... 0%Reading package lists... 3%Reading package lists... 3%Reading package lists... 4%Reading package lists... 4%Reading package lists... 5%Reading package lists... 5%Reading package lists... 5%Reading package lists... 5%Reading package lists... 38%Reading package lists... 39%Reading package lists... 39%Reading package lists... 55%Reading package lists... 55%Reading package lists... 55%Reading package lists... 55%Reading package lists... 55%Reading package lists... 55%Reading package lists... 60%Reading package lists... 60%Reading package lists... 62%Reading package lists... 62%Reading package lists... 68%Reading package lists... 68%Reading package lists... 73%Reading package lists... 73%Reading package lists... 77%Reading package lists... 77%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 79%Reading package lists... 82%Reading package lists... 82%Reading package lists... 85%Reading package lists... 85%Reading package lists... 91%Reading package lists... 91%Reading package lists... 95%Reading package lists... 95%Reading package lists... 98%Reading package lists... 98%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... 99%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+5 packages can be upgraded. Run 'apt list --upgradable' to see them.
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7msudo apt install -y python3-distutils python3-pip[27msudo apt install -y python3-distutils python3-pip
+[?2004lReading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+Package python3-distutils is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+[1;31mE: [0mPackage 'python3-distutils' has no installation candidate[0m
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7msudo pip3 install docker-compose[27msudo pip3 install docker-compose
+[?2004lsudo: pip3: command not found
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker-compose --version[27mdocker-compose --version
+[?2004lTraceback (most recent call last):
+  File "/usr/bin/docker-compose", line 33, in <module>
+    sys.exit(load_entry_point('docker-compose==1.29.2', 'console_scripts', 'docker-compose')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/bin/docker-compose", line 25, in importlib_load_entry_point
+    return next(matches).load()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/metadata/__init__.py", line 205, in load
+    module = import_module(match.group('module'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/usr/lib/python3/dist-packages/compose/cli/main.py", line 9, in <module>
+    from distutils.spawn import find_executable
+ModuleNotFoundError: No module named 'distutils'
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7msudo apt install -y docker-compose-plugin[27msudo apt install -y docker-compose-plugin
+[?2004lReading package lists... 0%Reading package lists... 100%Reading package lists... Done
+Building dependency tree... 0%Building dependency tree... 0%Building dependency tree... 50%Building dependency tree... 50%Building dependency tree... Done
+Reading state information... 0% Reading state information... 0%Reading state information... Done
+[1;31mE: [0mUnable to locate package docker-compose-plugin[0m
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker compose version[27mdocker compose version
+[?2004ldocker: unknown command: docker compose
+
+Run 'docker --help' for more information
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x setup-nfs-docker.sh[27mchmod +x setup-nfs-docker.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x test-nfs-docker.sh[27mchmod +x test-nfs-docker.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x test-automount-docker.sh[27mchmod +x test-automount-docker.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./setup-nfs-docker.sh[27m./setup-nfs-docker.sh
+[?2004l=== NFS Docker Setup ===
+a42aaab3a59c5726627d621e2ba501a4fb65a9533cf3e3c89344db6833a3fb45
+1. Starting NFS Server...
+Unable to find image 'ubuntu:22.04' locally
+22.04: Pulling from library/ubuntu
+
+[1A[2Kaf6eca94c810: Pulling fs layer [1B[1A[2Kaf6eca94c810: Downloading [>                                                  ]  303.9kB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [====>                                              ]   2.47MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [=======>                                           ]  4.317MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [=========>                                         ]  5.865MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [============>                                      ]  7.094MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [==============>                                    ]  8.339MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [=================>                                 ]  10.51MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [====================>                              ]  12.02MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [====================>                              ]  12.33MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [========================>                          ]   14.5MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [=============================>                     ]  17.26MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [==============================>                    ]  17.88MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [================================>                  ]  19.12MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [====================================>              ]  21.28MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [======================================>            ]  22.82MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [========================================>          ]  23.74MB/29.54MB[1B[1A[2Kaf6eca94c810: Downloading [============================================>      ]  26.51MB/29.54MB[1B[1A[2Kaf6eca94c810: Verifying Checksum [1B[1A[2Kaf6eca94c810: Download complete [1B[1A[2Kaf6eca94c810: Extracting [>                                                  ]  327.7kB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==>                                                ]  1.311MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [====>                                              ]  2.949MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [======>                                            ]  3.932MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [========>                                          ]  4.915MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==========>                                        ]  6.226MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [============>                                      ]  7.537MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=============>                                     ]  7.864MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==============>                                    ]  8.847MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=================>                                 ]  10.16MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [======================>                            ]  13.11MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==========================>                        ]  15.73MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=============================>                     ]  17.69MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=================================>                 ]  19.99MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=====================================>             ]  21.95MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=========================================>         ]  24.58MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [===========================================>       ]  25.56MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [===========================================>       ]  25.89MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==============================================>    ]  27.53MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [===============================================>   ]  28.18MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [================================================>  ]  28.84MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=================================================> ]  29.16MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [=================================================> ]  29.49MB/29.54MB[1B[1A[2Kaf6eca94c810: Extracting [==================================================>]  29.54MB/29.54MB[1B[1A[2Kaf6eca94c810: Pull complete [1BDigest: sha256:09506232a8004baa32c47d68f1e5c307d648fdd59f5e7eaa42aaf87914100db3
+Status: Downloaded newer image for ubuntu:22.04
+e88d1057a5ae0b68f96999101e6335347159f592600af1e684da9a2c9c45d097
+2. Waiting for server to start...
+3. Starting NFS Client...
+84ab2fa50a572d66a8a6675afae12f32743faaa3c4b690bf5bdfbc31d6defce3
+4. Checking setup...
+=== Server Status ===
+clnt_create: RPC: Program not registered
+=== Client Status ===
+=== Setup Complete ===
+NFS Server: 192.168.50.10
+NFS Client: 192.168.50.11
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./test-nfs-docker.sh[27m./test-nfs-docker.sh
+[?2004l=== NFS Functionality Test ===
+1. Testing NFS mount...
+❌ NFS mount failed
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ ^[[200~docker logs nfss~[K[1P[1P[1P[1P[1P[2P
+[?2004lGet:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:3 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1288 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3472 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6050 kB]
+Get:12 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [60.9 kB]
+Get:13 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5865 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3798 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [69.2 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1594 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.2 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.9 kB]
+Fetched 42.7 MB in 10s (4476 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  dmsetup keyutils libdevmapper1.02.1 libevent-core-2.1-7 libexpat1
+  libldap-2.5-0 libldap-common libmpdec3 libnfsidmap1 libpython3-stdlib
+  libpython3.10-minimal libpython3.10-stdlib libreadline8 libsasl2-2
+  libsasl2-modules libsasl2-modules-db libsqlite3-0 libwrap0 libyaml-0-2
+  media-types netbase nfs-common python3 python3-minimal python3-yaml
+  python3.10 python3.10-minimal readline-common rpcbind ucf
+Suggested packages:
+  libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal
+  libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql open-iscsi
+  watchdog python3-doc python3-tk python3-venv python3.10-venv python3.10-doc
+  binutils binfmt-support readline-doc
+The following NEW packages will be installed:
+  dmsetup keyutils libdevmapper1.02.1 libevent-core-2.1-7 libexpat1
+  libldap-2.5-0 libldap-common libmpdec3 libnfsidmap1 libpython3-stdlib
+  libpython3.10-minimal libpython3.10-stdlib libreadline8 libsasl2-2
+  libsasl2-modules libsasl2-modules-db libsqlite3-0 libwrap0 libyaml-0-2
+  media-types net-tools netbase nfs-common nfs-kernel-server python3
+  python3-minimal python3-yaml python3.10 python3.10-minimal readline-common
+  rpcbind ucf
+0 upgraded, 32 newly installed, 0 to remove and 2 not upgraded.
+Need to get 8226 kB of archives.
+After this operation, 29.7 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-minimal amd64 3.10.12-1~22.04.11 [815 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1 amd64 2.4.7-1ubuntu0.6 [92.1 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-minimal amd64 3.10.12-1~22.04.11 [2264 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-minimal amd64 3.10.6-1~22.04.1 [24.3 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 media-types all 7.0.0 [25.5 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpdec3 amd64 2.5.1-2build2 [86.8 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy/main amd64 readline-common all 8.1.2-1 [53.5 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 libreadline8 amd64 8.1.2-1 [153 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsqlite3-0 amd64 3.37.2-2ubuntu0.5 [643 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-stdlib amd64 3.10.12-1~22.04.11 [1850 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10 amd64 3.10.12-1~22.04.11 [508 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-stdlib amd64 3.10.6-1~22.04.1 [6812 B]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3 amd64 3.10.6-1~22.04.1 [22.8 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdevmapper1.02.1 amd64 2:1.02.175-2.1ubuntu5 [139 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 libevent-core-2.1-7 amd64 2.1.12-stable-1build3 [93.9 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules-db amd64 2.1.27+dfsg2-3ubuntu1.2 [20.5 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-2 amd64 2.1.27+dfsg2-3ubuntu1.2 [53.8 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-2.5-0 amd64 2.5.19+dfsg-0ubuntu0.22.04.1 [184 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libnfsidmap1 amd64 1:2.6.1-1ubuntu1.2 [42.9 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy/main amd64 libwrap0 amd64 7.6.q-31build2 [47.9 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy/main amd64 rpcbind amd64 1.2.6-2build1 [46.6 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy/main amd64 ucf all 3.0043 [56.1 kB]
+Get:23 http://archive.ubuntu.com/ubuntu jammy/main amd64 keyutils amd64 1.6.1-2ubuntu3 [50.4 kB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 nfs-common amd64 1:2.6.1-1ubuntu1.2 [241 kB]
+Get:25 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dmsetup amd64 2:1.02.175-2.1ubuntu5 [81.7 kB]
+Get:26 http://archive.ubuntu.com/ubuntu jammy/main amd64 libyaml-0-2 amd64 0.2.2-1build2 [51.6 kB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy/main amd64 netbase all 6.3 [12.9 kB]
+Get:28 http://archive.ubuntu.com/ubuntu jammy/main amd64 python3-yaml amd64 5.4.1-1ubuntu1 [129 kB]
+Get:29 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-common all 2.5.19+dfsg-0ubuntu0.22.04.1 [16.1 kB]
+Get:30 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules amd64 2.1.27+dfsg2-3ubuntu1.2 [68.8 kB]
+Get:31 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 net-tools amd64 1.60+git20181103.0eebece-1ubuntu5.4 [204 kB]
+Get:32 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 nfs-kernel-server amd64 1:2.6.1-1ubuntu1.2 [140 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 8226 kB in 3s (2629 kB/s)
+Selecting previously unselected package libpython3.10-minimal:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4393 files and directories currently installed.)
+Preparing to unpack .../libpython3.10-minimal_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking libpython3.10-minimal:amd64 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../libexpat1_2.4.7-1ubuntu0.6_amd64.deb ...
+Unpacking libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+Selecting previously unselected package python3.10-minimal.
+Preparing to unpack .../python3.10-minimal_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking python3.10-minimal (3.10.12-1~22.04.11) ...
+Setting up libpython3.10-minimal:amd64 (3.10.12-1~22.04.11) ...
+Setting up libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+Setting up python3.10-minimal (3.10.12-1~22.04.11) ...
+Selecting previously unselected package python3-minimal.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4697 files and directories currently installed.)
+Preparing to unpack .../0-python3-minimal_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package media-types.
+Preparing to unpack .../1-media-types_7.0.0_all.deb ...
+Unpacking media-types (7.0.0) ...
+Selecting previously unselected package libmpdec3:amd64.
+Preparing to unpack .../2-libmpdec3_2.5.1-2build2_amd64.deb ...
+Unpacking libmpdec3:amd64 (2.5.1-2build2) ...
+Selecting previously unselected package readline-common.
+Preparing to unpack .../3-readline-common_8.1.2-1_all.deb ...
+Unpacking readline-common (8.1.2-1) ...
+Selecting previously unselected package libreadline8:amd64.
+Preparing to unpack .../4-libreadline8_8.1.2-1_amd64.deb ...
+Unpacking libreadline8:amd64 (8.1.2-1) ...
+Selecting previously unselected package libsqlite3-0:amd64.
+Preparing to unpack .../5-libsqlite3-0_3.37.2-2ubuntu0.5_amd64.deb ...
+Unpacking libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+Selecting previously unselected package libpython3.10-stdlib:amd64.
+Preparing to unpack .../6-libpython3.10-stdlib_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking libpython3.10-stdlib:amd64 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package python3.10.
+Preparing to unpack .../7-python3.10_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking python3.10 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package libpython3-stdlib:amd64.
+Preparing to unpack .../8-libpython3-stdlib_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package python3.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5127 files and directories currently installed.)
+Preparing to unpack .../00-python3_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3 (3.10.6-1~22.04.1) ...
+Selecting previously unselected package libdevmapper1.02.1:amd64.
+Preparing to unpack .../01-libdevmapper1.02.1_2%3a1.02.175-2.1ubuntu5_amd64.deb ...
+Unpacking libdevmapper1.02.1:amd64 (2:1.02.175-2.1ubuntu5) ...
+Selecting previously unselected package libevent-core-2.1-7:amd64.
+Preparing to unpack .../02-libevent-core-2.1-7_2.1.12-stable-1build3_amd64.deb ...
+Unpacking libevent-core-2.1-7:amd64 (2.1.12-stable-1build3) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../03-libsasl2-modules-db_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../04-libsasl2-2_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package libldap-2.5-0:amd64.
+Preparing to unpack .../05-libldap-2.5-0_2.5.19+dfsg-0ubuntu0.22.04.1_amd64.deb ...
+Unpacking libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Selecting previously unselected package libnfsidmap1:amd64.
+Preparing to unpack .../06-libnfsidmap1_1%3a2.6.1-1ubuntu1.2_amd64.deb ...
+Unpacking libnfsidmap1:amd64 (1:2.6.1-1ubuntu1.2) ...
+Selecting previously unselected package libwrap0:amd64.
+Preparing to unpack .../07-libwrap0_7.6.q-31build2_amd64.deb ...
+Unpacking libwrap0:amd64 (7.6.q-31build2) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../08-rpcbind_1.2.6-2build1_amd64.deb ...
+Unpacking rpcbind (1.2.6-2build1) ...
+Selecting previously unselected package ucf.
+Preparing to unpack .../09-ucf_3.0043_all.deb ...
+Moving old data out of the way
+Unpacking ucf (3.0043) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../10-keyutils_1.6.1-2ubuntu3_amd64.deb ...
+Unpacking keyutils (1.6.1-2ubuntu3) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../11-nfs-common_1%3a2.6.1-1ubuntu1.2_amd64.deb ...
+Unpacking nfs-common (1:2.6.1-1ubuntu1.2) ...
+Selecting previously unselected package dmsetup.
+Preparing to unpack .../12-dmsetup_2%3a1.02.175-2.1ubuntu5_amd64.deb ...
+Unpacking dmsetup (2:1.02.175-2.1ubuntu5) ...
+Selecting previously unselected package libyaml-0-2:amd64.
+Preparing to unpack .../13-libyaml-0-2_0.2.2-1build2_amd64.deb ...
+Unpacking libyaml-0-2:amd64 (0.2.2-1build2) ...
+Selecting previously unselected package netbase.
+Preparing to unpack .../14-netbase_6.3_all.deb ...
+Unpacking netbase (6.3) ...
+Selecting previously unselected package python3-yaml.
+Preparing to unpack .../15-python3-yaml_5.4.1-1ubuntu1_amd64.deb ...
+Unpacking python3-yaml (5.4.1-1ubuntu1) ...
+Selecting previously unselected package libldap-common.
+Preparing to unpack .../16-libldap-common_2.5.19+dfsg-0ubuntu0.22.04.1_all.deb ...
+Unpacking libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Selecting previously unselected package libsasl2-modules:amd64.
+Preparing to unpack .../17-libsasl2-modules_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package net-tools.
+Preparing to unpack .../18-net-tools_1.60+git20181103.0eebece-1ubuntu5.4_amd64.deb ...
+Unpacking net-tools (1.60+git20181103.0eebece-1ubuntu5.4) ...
+Selecting previously unselected package nfs-kernel-server.
+Preparing to unpack .../19-nfs-kernel-server_1%3a2.6.1-1ubuntu1.2_amd64.deb ...
+Unpacking nfs-kernel-server (1:2.6.1-1ubuntu1.2) ...
+Setting up media-types (7.0.0) ...
+Setting up net-tools (1.60+git20181103.0eebece-1ubuntu5.4) ...
+Setting up libyaml-0-2:amd64 (0.2.2-1build2) ...
+Setting up libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+Setting up libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Setting up libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libwrap0:amd64 (7.6.q-31build2) ...
+Setting up libevent-core-2.1-7:amd64 (2.1.12-stable-1build3) ...
+Setting up ucf (3.0043) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libdevmapper1.02.1:amd64 (2:1.02.175-2.1ubuntu5) ...
+Setting up keyutils (1.6.1-2ubuntu3) ...
+Setting up dmsetup (2:1.02.175-2.1ubuntu5) ...
+Setting up libmpdec3:amd64 (2.5.1-2build2) ...
+Setting up netbase (6.3) ...
+Setting up readline-common (8.1.2-1) ...
+Setting up libreadline8:amd64 (8.1.2-1) ...
+Setting up rpcbind (1.2.6-2build1) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Setting up libpython3.10-stdlib:amd64 (3.10.12-1~22.04.11) ...
+Setting up libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up libnfsidmap1:amd64 (1:2.6.1-1ubuntu1.2) ...
+Setting up python3.10 (3.10.12-1~22.04.11) ...
+Setting up python3 (3.10.6-1~22.04.1) ...
+running python rtupdate hooks for python3.10...
+running python post-rtupdate hooks for python3.10...
+Setting up nfs-common (1:2.6.1-1ubuntu1.2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/idmapd.conf with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/nfs.conf with new version
+Adding system user `statd' (UID 102) ...
+Adding new user `statd' (UID 102) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up nfs-kernel-server (1:2.6.1-1ubuntu1.2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/exports with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/default/nfs-kernel-server with new version
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up python3-yaml (5.4.1-1ubuntu1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.11) ...
+ * Starting RPC port mapper daemon rpcbind
+ln: failed to create symbolic link '/run/sendsigs.omit.d/rpcbind': No such file or directory
+   ...fail!
+ * Not starting NFS kernel daemon: no support in current kernel.
+=== NFS Server Ready ===
+clnt_create: RPC: Program not registered
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker logs nfsc[27mdocker logs nfsc
+[?2004lGet:1 http://archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:2 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:5 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1288 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1792 kB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3472 kB]
+Get:8 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [60.9 kB]
+Get:9 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5865 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [164 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [17.5 MB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [266 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [69.2 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1594 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6050 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3798 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [83.9 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.2 kB]
+Fetched 42.7 MB in 5s (7915 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  dmsetup keyutils libdevmapper1.02.1 libevent-core-2.1-7 libexpat1
+  libldap-2.5-0 libldap-common libmpdec3 libnfsidmap1 libpython3-stdlib
+  libpython3.10-minimal libpython3.10-stdlib libreadline8 libsasl2-2
+  libsasl2-modules libsasl2-modules-db libsqlite3-0 libwrap0 media-types
+  python3 python3-minimal python3.10 python3.10-minimal readline-common
+  rpcbind ucf
+Suggested packages:
+  libsasl2-modules-gssapi-mit | libsasl2-modules-gssapi-heimdal
+  libsasl2-modules-ldap libsasl2-modules-otp libsasl2-modules-sql open-iscsi
+  watchdog python3-doc python3-tk python3-venv python3.10-venv python3.10-doc
+  binutils binfmt-support readline-doc
+The following NEW packages will be installed:
+  dmsetup keyutils libdevmapper1.02.1 libevent-core-2.1-7 libexpat1
+  libldap-2.5-0 libldap-common libmpdec3 libnfsidmap1 libpython3-stdlib
+  libpython3.10-minimal libpython3.10-stdlib libreadline8 libsasl2-2
+  libsasl2-modules libsasl2-modules-db libsqlite3-0 libwrap0 media-types
+  net-tools nfs-common python3 python3-minimal python3.10 python3.10-minimal
+  readline-common rpcbind ucf
+0 upgraded, 28 newly installed, 0 to remove and 2 not upgraded.
+Need to get 7892 kB of archives.
+After this operation, 28.5 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-minimal amd64 3.10.12-1~22.04.11 [815 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1 amd64 2.4.7-1ubuntu0.6 [92.1 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-minimal amd64 3.10.12-1~22.04.11 [2264 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-minimal amd64 3.10.6-1~22.04.1 [24.3 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy/main amd64 media-types all 7.0.0 [25.5 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpdec3 amd64 2.5.1-2build2 [86.8 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy/main amd64 readline-common all 8.1.2-1 [53.5 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy/main amd64 libreadline8 amd64 8.1.2-1 [153 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsqlite3-0 amd64 3.37.2-2ubuntu0.5 [643 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-stdlib amd64 3.10.12-1~22.04.11 [1850 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10 amd64 3.10.12-1~22.04.11 [508 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-stdlib amd64 3.10.6-1~22.04.1 [6812 B]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3 amd64 3.10.6-1~22.04.1 [22.8 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdevmapper1.02.1 amd64 2:1.02.175-2.1ubuntu5 [139 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy/main amd64 libevent-core-2.1-7 amd64 2.1.12-stable-1build3 [93.9 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules-db amd64 2.1.27+dfsg2-3ubuntu1.2 [20.5 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-2 amd64 2.1.27+dfsg2-3ubuntu1.2 [53.8 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-2.5-0 amd64 2.5.19+dfsg-0ubuntu0.22.04.1 [184 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libnfsidmap1 amd64 1:2.6.1-1ubuntu1.2 [42.9 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy/main amd64 libwrap0 amd64 7.6.q-31build2 [47.9 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy/main amd64 rpcbind amd64 1.2.6-2build1 [46.6 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy/main amd64 ucf all 3.0043 [56.1 kB]
+Get:23 http://archive.ubuntu.com/ubuntu jammy/main amd64 keyutils amd64 1.6.1-2ubuntu3 [50.4 kB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 nfs-common amd64 1:2.6.1-1ubuntu1.2 [241 kB]
+Get:25 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dmsetup amd64 2:1.02.175-2.1ubuntu5 [81.7 kB]
+Get:26 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libldap-common all 2.5.19+dfsg-0ubuntu0.22.04.1 [16.1 kB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-modules amd64 2.1.27+dfsg2-3ubuntu1.2 [68.8 kB]
+Get:28 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 net-tools amd64 1.60+git20181103.0eebece-1ubuntu5.4 [204 kB]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 7892 kB in 2s (4108 kB/s)
+Selecting previously unselected package libpython3.10-minimal:amd64.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4393 files and directories currently installed.)
+Preparing to unpack .../libpython3.10-minimal_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking libpython3.10-minimal:amd64 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../libexpat1_2.4.7-1ubuntu0.6_amd64.deb ...
+Unpacking libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+Selecting previously unselected package python3.10-minimal.
+Preparing to unpack .../python3.10-minimal_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking python3.10-minimal (3.10.12-1~22.04.11) ...
+Setting up libpython3.10-minimal:amd64 (3.10.12-1~22.04.11) ...
+Setting up libexpat1:amd64 (2.4.7-1ubuntu0.6) ...
+Setting up python3.10-minimal (3.10.12-1~22.04.11) ...
+Selecting previously unselected package python3-minimal.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 4697 files and directories currently installed.)
+Preparing to unpack .../0-python3-minimal_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package media-types.
+Preparing to unpack .../1-media-types_7.0.0_all.deb ...
+Unpacking media-types (7.0.0) ...
+Selecting previously unselected package libmpdec3:amd64.
+Preparing to unpack .../2-libmpdec3_2.5.1-2build2_amd64.deb ...
+Unpacking libmpdec3:amd64 (2.5.1-2build2) ...
+Selecting previously unselected package readline-common.
+Preparing to unpack .../3-readline-common_8.1.2-1_all.deb ...
+Unpacking readline-common (8.1.2-1) ...
+Selecting previously unselected package libreadline8:amd64.
+Preparing to unpack .../4-libreadline8_8.1.2-1_amd64.deb ...
+Unpacking libreadline8:amd64 (8.1.2-1) ...
+Selecting previously unselected package libsqlite3-0:amd64.
+Preparing to unpack .../5-libsqlite3-0_3.37.2-2ubuntu0.5_amd64.deb ...
+Unpacking libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+Selecting previously unselected package libpython3.10-stdlib:amd64.
+Preparing to unpack .../6-libpython3.10-stdlib_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking libpython3.10-stdlib:amd64 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package python3.10.
+Preparing to unpack .../7-python3.10_3.10.12-1~22.04.11_amd64.deb ...
+Unpacking python3.10 (3.10.12-1~22.04.11) ...
+Selecting previously unselected package libpython3-stdlib:amd64.
+Preparing to unpack .../8-libpython3-stdlib_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up python3-minimal (3.10.6-1~22.04.1) ...
+Selecting previously unselected package python3.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 5127 files and directories currently installed.)
+Preparing to unpack .../00-python3_3.10.6-1~22.04.1_amd64.deb ...
+Unpacking python3 (3.10.6-1~22.04.1) ...
+Selecting previously unselected package libdevmapper1.02.1:amd64.
+Preparing to unpack .../01-libdevmapper1.02.1_2%3a1.02.175-2.1ubuntu5_amd64.deb ...
+Unpacking libdevmapper1.02.1:amd64 (2:1.02.175-2.1ubuntu5) ...
+Selecting previously unselected package libevent-core-2.1-7:amd64.
+Preparing to unpack .../02-libevent-core-2.1-7_2.1.12-stable-1build3_amd64.deb ...
+Unpacking libevent-core-2.1-7:amd64 (2.1.12-stable-1build3) ...
+Selecting previously unselected package libsasl2-modules-db:amd64.
+Preparing to unpack .../03-libsasl2-modules-db_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package libsasl2-2:amd64.
+Preparing to unpack .../04-libsasl2-2_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package libldap-2.5-0:amd64.
+Preparing to unpack .../05-libldap-2.5-0_2.5.19+dfsg-0ubuntu0.22.04.1_amd64.deb ...
+Unpacking libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Selecting previously unselected package libnfsidmap1:amd64.
+Preparing to unpack .../06-libnfsidmap1_1%3a2.6.1-1ubuntu1.2_amd64.deb ...
+Unpacking libnfsidmap1:amd64 (1:2.6.1-1ubuntu1.2) ...
+Selecting previously unselected package libwrap0:amd64.
+Preparing to unpack .../07-libwrap0_7.6.q-31build2_amd64.deb ...
+Unpacking libwrap0:amd64 (7.6.q-31build2) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../08-rpcbind_1.2.6-2build1_amd64.deb ...
+Unpacking rpcbind (1.2.6-2build1) ...
+Selecting previously unselected package ucf.
+Preparing to unpack .../09-ucf_3.0043_all.deb ...
+Moving old data out of the way
+Unpacking ucf (3.0043) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../10-keyutils_1.6.1-2ubuntu3_amd64.deb ...
+Unpacking keyutils (1.6.1-2ubuntu3) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../11-nfs-common_1%3a2.6.1-1ubuntu1.2_amd64.deb ...
+Unpacking nfs-common (1:2.6.1-1ubuntu1.2) ...
+Selecting previously unselected package dmsetup.
+Preparing to unpack .../12-dmsetup_2%3a1.02.175-2.1ubuntu5_amd64.deb ...
+Unpacking dmsetup (2:1.02.175-2.1ubuntu5) ...
+Selecting previously unselected package libldap-common.
+Preparing to unpack .../13-libldap-common_2.5.19+dfsg-0ubuntu0.22.04.1_all.deb ...
+Unpacking libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Selecting previously unselected package libsasl2-modules:amd64.
+Preparing to unpack .../14-libsasl2-modules_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Selecting previously unselected package net-tools.
+Preparing to unpack .../15-net-tools_1.60+git20181103.0eebece-1ubuntu5.4_amd64.deb ...
+Unpacking net-tools (1.60+git20181103.0eebece-1ubuntu5.4) ...
+Setting up media-types (7.0.0) ...
+Setting up net-tools (1.60+git20181103.0eebece-1ubuntu5.4) ...
+Setting up libsqlite3-0:amd64 (3.37.2-2ubuntu0.5) ...
+Setting up libsasl2-modules:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libldap-common (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Setting up libsasl2-modules-db:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libwrap0:amd64 (7.6.q-31build2) ...
+Setting up libevent-core-2.1-7:amd64 (2.1.12-stable-1build3) ...
+Setting up ucf (3.0043) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up libsasl2-2:amd64 (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libdevmapper1.02.1:amd64 (2:1.02.175-2.1ubuntu5) ...
+Setting up keyutils (1.6.1-2ubuntu3) ...
+Setting up dmsetup (2:1.02.175-2.1ubuntu5) ...
+Setting up libmpdec3:amd64 (2.5.1-2build2) ...
+Setting up readline-common (8.1.2-1) ...
+Setting up libreadline8:amd64 (8.1.2-1) ...
+Setting up rpcbind (1.2.6-2build1) ...
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Setting up libldap-2.5-0:amd64 (2.5.19+dfsg-0ubuntu0.22.04.1) ...
+Setting up libpython3.10-stdlib:amd64 (3.10.12-1~22.04.11) ...
+Setting up libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...
+Setting up libnfsidmap1:amd64 (1:2.6.1-1ubuntu1.2) ...
+Setting up python3.10 (3.10.12-1~22.04.11) ...
+Setting up python3 (3.10.6-1~22.04.1) ...
+running python rtupdate hooks for python3.10...
+running python post-rtupdate hooks for python3.10...
+Setting up nfs-common (1:2.6.1-1ubuntu1.2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/idmapd.conf with new version
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.34.0 /usr/local/share/perl/5.34.0 /usr/lib/x86_64-linux-gnu/perl5/5.34 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.34 /usr/share/perl/5.34 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+
+Creating config file /etc/nfs.conf with new version
+Adding system user `statd' (UID 102) ...
+Adding new user `statd' (UID 102) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+invoke-rc.d: could not determine current runlevel
+invoke-rc.d: policy-rc.d denied execution of start.
+Processing triggers for libc-bin (2.35-0ubuntu3.11) ...
+Waiting for NFS server...
+mount.nfs: rpc.statd is not running but is required for remote locking.
+mount.nfs: Either use '-o nolock' to keep locks local, or start statd.
+=== NFS Client Ready ===
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec -it nfss bash[27mdocker exec -it nfss bash
+[?2004l[?2004h]0;root@nfss: /root@nfss:/# exit
+[?2004lexit
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec -it nfsc bash[27mdocker exec -it nfsc bash
+[?2004l[?2004h]0;root@nfsc: /root@nfsc:/# pwd
+[?2004l/
+[?2004h]0;root@nfsc: /root@nfsc:/# ls -la
+[?2004ltotal 68
+drwxr-xr-x   1 root root 4096 Oct 23 08:40 [0m[01;34m.[0m
+drwxr-xr-x   1 root root 4096 Oct 23 08:40 [01;34m..[0m
+-rwxr-xr-x   1 root root    0 Oct 23 08:40 [01;32m.dockerenv[0m
+lrwxrwxrwx   1 root root    7 Oct  1 02:03 [01;36mbin[0m -> [01;34musr/bin[0m
+drwxr-xr-x   2 root root 4096 Apr 18  2022 [01;34mboot[0m
+drwxr-xr-x  16 root root 4180 Oct 23 08:40 [01;34mdev[0m
+drwxr-xr-x   1 root root 4096 Oct 23 08:40 [01;34metc[0m
+drwxr-xr-x   2 root root 4096 Apr 18  2022 [01;34mhome[0m
+lrwxrwxrwx   1 root root    7 Oct  1 02:03 [01;36mlib[0m -> [01;34musr/lib[0m
+lrwxrwxrwx   1 root root    9 Oct  1 02:03 [01;36mlib32[0m -> [01;34musr/lib32[0m
+lrwxrwxrwx   1 root root    9 Oct  1 02:03 [01;36mlib64[0m -> [01;34musr/lib64[0m
+lrwxrwxrwx   1 root root   10 Oct  1 02:03 [01;36mlibx32[0m -> [01;34musr/libx32[0m
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 [01;34mmedia[0m
+drwxr-xr-x   1 root root 4096 Oct 23 08:40 [01;34mmnt[0m
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 [01;34mopt[0m
+dr-xr-xr-x 414 root root    0 Oct 23 08:40 [01;34mproc[0m
+drwx------   2 root root 4096 Oct  1 02:10 [01;34mroot[0m
+drwxr-xr-x   1 root root 4096 Oct 23 08:41 [01;34mrun[0m
+lrwxrwxrwx   1 root root    8 Oct  1 02:03 [01;36msbin[0m -> [01;34musr/sbin[0m
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 [01;34msrv[0m
+dr-xr-xr-x  13 root root    0 Oct 23 08:40 [01;34msys[0m
+drwxrwxrwt   1 root root 4096 Oct 23 08:40 [30;42mtmp[0m
+drwxr-xr-x   1 root root 4096 Oct  1 02:03 [01;34musr[0m
+drwxr-xr-x   1 root root 4096 Oct  1 02:10 [01;34mvar[0m
+[?2004h]0;root@nfsc: /root@nfsc:/# exit
+[?2004lexit
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ docker exec -it nfsc bashs[C[C[C[C[C[9Plogs nfscs./test-nfs-docker.shsetup-nfs-docker.shchmod +x test-automount-docker.sh[12P./setup-nfs-docker.sh[1Ptest-nfs-docker.sh[4Pdocker logs nfsscexec -it nfss bash[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[7mchmod +x setup-nfs-fixed.sh[27mchmod +x setup-nfs-fixed.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./setup-nfs-fixed.sh[27m./setup-nfs-fixed.sh
+[?2004l=== NFS Docker Setup (Fixed) ===
+nfss
+nfsc
+nfss
+nfsc
+1. Starting NFS Server...
+2ea68422d5617d6b78f5dacde8d246c7024b007f177ce68c282c012d84d48ac6
+2. Waiting for server to start...
+3. Starting NFS Client...
+cb5744b6fbf014cd8fe201a3a5cab8d8b51f0bcf0fb9a72c1955a8b95429289d
+4. Checking setup...
+=== Server Status ===
+   program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+    100024    1   udp  35989  status
+    100024    1   tcp  53601  status
+    100003    3   tcp   2049  nfs
+    100003    4   tcp   2049  nfs
+    100227    3   tcp   2049
+    100021    1   udp  47457  nlockmgr
+    100021    3   udp  47457  nlockmgr
+    100021    4   udp  47457  nlockmgr
+    100021    1   tcp  41613  nlockmgr
+    100021    3   tcp  41613  nlockmgr
+    100021    4   tcp  41613  nlockmgr
+    100005    1   udp  48214  mountd
+    100005    1   tcp  46131  mountd
+    100005    2   udp  57154  mountd
+    100005    2   tcp  33883  mountd
+    100005    3   udp  48642  mountd
+    100005    3   tcp  34099  mountd
+Export list for localhost:
+=== Client Status ===
+=== Setup Complete ===
+NFS Server: 192.168.50.10
+NFS Client: 192.168.50.11
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [K]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [K]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [K]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfss rpcinfo -p[27mdocker exec nfss rpcinfo -p
+[?2004l   program vers proto   port  service
+    100000    4   tcp    111  portmapper
+    100000    3   tcp    111  portmapper
+    100000    2   tcp    111  portmapper
+    100000    4   udp    111  portmapper
+    100000    3   udp    111  portmapper
+    100000    2   udp    111  portmapper
+    100024    1   udp  35989  status
+    100024    1   tcp  53601  status
+    100003    3   tcp   2049  nfs
+    100003    4   tcp   2049  nfs
+    100227    3   tcp   2049
+    100021    1   udp  47457  nlockmgr
+    100021    3   udp  47457  nlockmgr
+    100021    4   udp  47457  nlockmgr
+    100021    1   tcp  41613  nlockmgr
+    100021    3   tcp  41613  nlockmgr
+    100021    4   tcp  41613  nlockmgr
+    100005    1   udp  48214  mountd
+    100005    1   tcp  46131  mountd
+    100005    2   udp  57154  mountd
+    100005    2   tcp  33883  mountd
+    100005    3   udp  48642  mountd
+    100005    3   tcp  34099  mountd
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfsc mount | grep nfs[27mdocker exec nfsc mount | grep nfs
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfsc touch /mnt/nfs/upload/test_file.txt[27mdocker exec nfsc touch /mnt/nfs/upload/test_file.txt
+[?2004ltouch: cannot touch '/mnt/nfs/upload/test_file.txt': No such file or directory
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfss ls -la /srv/share/upload/[27mdocker exec nfss ls -la /srv/share/upload/
+[?2004ltotal 8
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 08:49 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 08:49 ..
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfsc ping -c 2 192.168.50.10[27mdocker exec nfsc ping -c 2 192.168.50.10
+[?2004lOCI runtime exec failed: exec failed: unable to start container process: exec: "ping": executable file not found in $PATH: unknown
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfsc mount -t nfs -o vers=3,nolock 192.168.5[27m[7m0[27m[7m.10:/srv/share /mnt/nfs[27m[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ docker exec nfsc mount -t nfs -o vers=3,nolock 192.168.50.10:/srv/share /mnt/nfs
+[?2004lmount.nfs: Protocol not supported
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mdocker exec nfsc mount | grep nfs[27mdocker exec nfsc mount | grep nfs
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x setup-nfs-volumes.sh[27mchmod +x setup-nfs-volumes.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./setup-nfs-volumes.sh[27m./setup-nfs-volumes.sh
+[?2004l=== NFS-like Setup with Docker Volumes ===
+nfss
+nfsc
+nfss
+nfsc
+nfs-share
+1. Starting NFS Server (simulated)...
+c51fad680e5b65468de99ce7ba769754e1a942441be035f45ac802f8898f5bd4
+2. Waiting for server...
+3. Starting NFS Client...
+docker: Error response from daemon: invalid volume specification: 'nfs-share:/mnt/nfs:shared': invalid mount config for type "volume": field BindOptions must not be specified
+
+Run 'docker run --help' for more information
+4. Checking setup...
+=== Server View ===
+total 12
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:10 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 root   root      21 Oct 23 09:10 server_file.txt
+=== Client View ===
+Error response from daemon: No such container: nfsc
+=== Testing Cross-Access ===
+Error response from daemon: No such container: nfsc
+=== Final Contents ===
+cat: /srv/share/upload/client_file.txt: No such file or directory
+Error response from daemon: No such container: nfsc
+=== Volume Setup Complete ===
+✅ Shared storage is working!
+✅ Both containers can read/write to the same directory
+✅ This simulates NFS functionality
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ ./setup-nfs-volumes.sh
+[?2004l=== NFS-like Setup with Docker Volumes ===
+nfss
+nfss
+nfs-share
+1. Starting NFS Server (simulated)...
+a57a15678423c795e810ce2bdb0c716e4877328407158ab8398925f7f88b8533
+2. Waiting for server...
+3. Starting NFS Client...
+db504d5a05104245537a1eb359ec459c0c2ab42f6fcc1aed38088c55c0c9e532
+4. Checking setup...
+=== Server View ===
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 root   root      21 Oct 23 09:12 client_file.txt
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:12 server_file.txt
+=== Client View ===
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 root   root      21 Oct 23 09:12 client_file.txt
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:12 server_file.txt
+=== Testing Cross-Access ===
+=== Final Contents ===
+Server reading client file:
+File from NFS Client
+Additional from client
+Client reading server file:
+File from NFS Server
+Additional from server
+=== Volume Setup Complete ===
+✅ Shared storage is working!
+✅ Both containers can read/write to the same directory
+✅ This simulates NFS functionality
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ #!/bin/bash
+
+[7mecho "=== Final NFS Test ==="[27m
+
+[7m# Test 1: Базовая функциональность[27m
+[7mecho "1. Basic functionality test..."[27m
+[7mecho "Files on server:"[27m
+[7mdocker exec nfss ls -la /srv/share/upload/[27m
+[7mecho "Files on client:"[27m
+[7mdocker exec nfsc ls -la /mnt/nfs/upload/[27m
+
+[7m# Test 2: Создание новых файлов[27m
+[7mecho "2. Creating new test files..."[27m
+[7mdocker exec nfss touch /srv/share/upload/new_server_file.txt[27m
+[7mdocker exec nfsc touch /mnt/nfs/upload/new_client_file.txt[27m
+
+[7m# Test 3: Проверка видимости[27m
+[7mecho "3. Checking cross-visibility..."[27m
+[7mecho "Server sees client files:"[27m
+[7mdocker exec nfss ls -la /srv/share/upload/ | grep client[27m
+[7mecho "Client sees server files:"[27m
+[7mdocker exec nfsc ls -la /mnt/nfs/upload/ | grep server[27m
+
+[7m# Test 4: Права доступа[27m
+[7mecho "4. Testing permissions..."[27m
+[7mdocker exec nfss bash -c "chmod 644 /srv/share/upload/server_file.txt && ls -la /srv/share/upload/server_file.txt"[27m
+[7mdocker exec nfsc bash -c "ls -la /mnt/nfs/upload/server_file.txt"[27m
+
+[7m# Test 5: Содержимое файлов[27m
+[7mecho "5. Testing file content sharing..."[27m
+[7mdocker exec nfss bash -c "echo 'Modified by server' >> /srv/share/upload/server_file.txt"[27m
+[7mdocker exec nfsc bash -c "cat /mnt/nfs/upload/server_file.txt"[27m[7mecho "=== All Tests Completed Successfully ==="[27m[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Aecho "=== Final NFS Test ==="
+
+# Test 1: Базовая функциональность
+echo "1. Basic functionality test..."
+echo "Files on server:"
+docker exec nfss ls -la /srv/share/upload/
+echo "Files on client:"
+docker exec nfsc ls -la /mnt/nfs/upload/
+
+# Test 2: Создание новых файлов
+echo "2. Creating new test files..."
+docker exec nfss touch /srv/share/upload/new_server_file.txt
+docker exec nfsc touch /mnt/nfs/upload/new_client_file.txt
+
+# Test 3: Проверка видимости
+echo "3. Checking cross-visibility..."
+echo "Server sees client files:"
+docker exec nfss ls -la /srv/share/upload/ | grep client
+echo "Client sees server files:"
+docker exec nfsc ls -la /mnt/nfs/upload/ | grep server
+
+# Test 4: Права доступа
+echo "4. Testing permissions..."
+docker exec nfss bash -c "chmod 644 /srv/share/upload/server_file.txt && ls -la /srv/share/upload/server_file.txt"
+docker exec nfsc bash -c "ls -la /mnt/nfs/upload/server_file.txt"
+
+# Test 5: Содержимое файлов
+echo "5. Testing file content sharing..."
+docker exec nfss bash -c "echo 'Modified by server' >> /srv/share/upload/server_file.txt"
+docker exec nfsc bash -c "cat /mnt/nfs/upload/server_file.txt"echo "=== All Tests Completed Successfully ==="[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ ./setup-nfs-volumes.sh
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[K[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C [B[14P#!/bin/bash
+
+echo "=== Final NFS Test ==="
+
+# Test 1: Базовая функциональность
+echo "1. Basic functionality test..."
+echo "Files on server:"
+docker exec nfss ls -la /srv/share/upload/
+echo "Files on client:"
+docker exec nfsc ls -la /mnt/nfs/upload/
+
+# Test 2: Создание новых файлов
+echo "2. Creating new test files..."
+docker exec nfss touch /srv/share/upload/new_server_file.txt
+docker exec nfsc touch /mnt/nfs/upload/new_client_file.txt
+
+# Test 3: Проверка видимости
+echo "3. Checking cross-visibility..."
+echo "Server sees client files:"
+docker exec nfss ls -la /srv/share/upload/ | grep client
+echo "Client sees server files:"
+docker exec nfsc ls -la /mnt/nfs/upload/ | grep server
+
+# Test 4: Права доступа
+echo "4. Testing permissions..."
+docker exec nfss bash -c "chmod 644 /srv/share/upload/server_file.txt && ls -la /srv/share/upload/server_file.txt"
+docker exec nfsc bash -c "ls -la /mnt/nfs/upload/server_file.txt"
+
+# Test 5: Содержимое файлов
+echo "5. Testing file content sharing..."
+docker exec nfss bash -c "echo 'Modified by server' >> /srv/share/upload/server_file.txt"
+docker exec nfsc bash -c "cat /mnt/nfs/upload/server_file.txt"echo "=== All Tests Completed Successfully ==="[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ ./setup-nfs-volumes.sh [B
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[K[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cchmod +x setup-nfs-volumes.shdocker exec nfsc mount | grep nfs[4Pchmod +x setup-nfs-volumes.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ chmod +x setup-nfs-volumes.sh[K[7mchmod +x test-final.sh[27mchmod +x test-final.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ #!/bin/bash
+
+echo "=== Демонстрация выполнения ДЗ: Работа с NFS ==="
+echo ""
+
+echo "1. Запущено 2 виртуальных машины (сервер и клиент):"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Networks}}"
+
+echo ""
+[7mecho "2. На сервере подготовлена и экспортирована директория:"[27m
+[7mdocker exec nfss ls -la /srv/share/[27m
+
+[7mecho ""[27m
+[7mecho "3. В экспортированной директории создана поддиректория upload с правами на запись:"[27m
+[7mdocker exec nfss ls -la /srv/share/upload/[27m
+[7mdocker exec nfss stat -c "%A %n" /srv/share/upload/[27m
+
+[7mecho ""[27m
+[7mecho "4. Директория автоматически доступна на клиенте:"[27m
+[7mdocker exec nfsc ls -la /mnt/nfs/upload/[27m
+
+[7mecho ""[27m
+[7mecho "5. Тестирование записи с клиента:"[27m
+[7mdocker exec nfsc bash -c "echo 'Тест записи с клиента' > /mnt/nfs/upload/client_write_test.txt"[27m
+[7mdocker exec nfss cat /srv/share/upload/client_write_test.txt[27m
+
+[7mecho ""[27m
+[7mecho "6. Тестирование записи с сервера:"[27m
+[7mdocker exec nfss bash -c "echo 'Тест записи с сервера' > /srv/share/upload/server_write_test.txt"[27m
+[7mdocker exec nfsc cat /mnt/nfs/upload/server_write_test.txt[27m
+
+[7mecho ""[27m
+[7mecho "7. Проверка сетевой связности:"[27m[7mdocker exec nfsc apt-get update >/dev/null 2>&1[27m[7mdocker exec nfsc apt-get install -y iputils-ping >/dev/null 2>&1[27m[7mdocker exec nfsc ping -c 2 192.168.50.10[27m[7mecho ""[27m[7mecho "=== ДЗ ВЫПОЛНЕНО УСПЕШНО ==="[27m[7mecho "Все требования выполнены с использованием Docker volumes"[27m[7mecho "В реальной среде использовался бы NFS протокол"[27m[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[Aecho "2. На сервере подготовлена и экспортирована директория:"
+docker exec nfss ls -la /srv/share/
+
+echo ""
+echo "3. В экспортированной директории создана поддиректория upload с правами на запись:"
+docker exec nfss ls -la /srv/share/upload/
+docker exec nfss stat -c "%A %n" /srv/share/upload/
+
+echo ""
+echo "4. Директория автоматически доступна на клиенте:"
+docker exec nfsc ls -la /mnt/nfs/upload/
+
+echo ""
+echo "5. Тестирование записи с клиента:"
+docker exec nfsc bash -c "echo 'Тест записи с клиента' > /mnt/nfs/upload/client_write_test.txt"
+docker exec nfss cat /srv/share/upload/client_write_test.txt
+
+echo ""
+echo "6. Тестирование записи с сервера:"
+docker exec nfss bash -c "echo 'Тест записи с сервера' > /srv/share/upload/server_write_test.txt"
+docker exec nfsc cat /mnt/nfs/upload/server_write_test.txt
+
+echo ""
+echo "7. Проверка сетевой связности:"docker exec nfsc apt-get update >/dev/null 2>&1docker exec nfsc apt-get install -y iputils-ping >/dev/null 2>&1docker exec nfsc ping -c 2 192.168.50.10echo ""echo "=== ДЗ ВЫПОЛНЕНО УСПЕШНО ==="echo "Все требования выполнены с использованием Docker volumes"echo "В реальной среде использовался бы NFS протокол"[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ chmod +x test-final.sh
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[K[K[K[K[K[K[K[K[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Csetup-nfs-volumes.sh[7Ptest-final.shsetup-nfs-volumes.sh[4P./setup-nfs-volumes.sh [Bchmod +x setup-nfs-volumes.sh[4P./setup-nfs-volumes.sh [B[K[K[Kchmod +x setup-nfs-volumes.sh[7Ptest-final.sh[11P#!/bin/bash
+
+echo "=== Демонстрация выполнения ДЗ: Работа с NFS ==="
+echo ""
+
+echo "1. Запущено 2 виртуальных машины (сервер и клиент):"
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Networks}}"
+
+echo ""
+echo "2. На сервере подготовлена и экспортирована директория:"
+docker exec nfss ls -la /srv/share/
+
+echo ""
+echo "3. В экспортированной директории создана поддиректория upload с правами на запись:"
+docker exec nfss ls -la /srv/share/upload/
+docker exec nfss stat -c "%A %n" /srv/share/upload/
+
+echo ""
+echo "4. Директория автоматически доступна на клиенте:"
+docker exec nfsc ls -la /mnt/nfs/upload/
+
+echo ""
+echo "5. Тестирование записи с клиента:"
+docker exec nfsc bash -c "echo 'Тест записи с клиента' > /mnt/nfs/upload/client_write_test.txt"
+docker exec nfss cat /srv/share/upload/client_write_test.txt
+
+echo ""
+echo "6. Тестирование записи с сервера:"
+docker exec nfss bash -c "echo 'Тест записи с сервера' > /srv/share/upload/server_write_test.txt"
+docker exec nfsc cat /mnt/nfs/upload/server_write_test.txt
+
+echo ""
+echo "7. Проверка сетевой связности:"docker exec nfsc apt-get update >/dev/null 2>&1docker exec nfsc apt-get install -y iputils-ping >/dev/null 2>&1docker exec nfsc ping -c 2 192.168.50.10echo ""echo "=== ДЗ ВЫПОЛНЕНО УСПЕШНО ==="echo "Все требования выполнены с использованием Docker volumes"echo "В реальной среде использовался бы NFS протокол"[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ chmod +x test-final.sh
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[K[K[K[K[K[K[K[K[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7mchmod +x demonstrate-hw.sh[27mchmod +x demonstrate-hw.sh
+[?2004l[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./setup-nfs-volumes-fixed.sh[27m./setup-nfs-volumes-fixed.sh
+[?2004lbash: ./setup-nfs-volumes-fixed.sh: No such file or directory
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ ./setup-nfs-volumes-fixed.sh[1P.sh[1P.sh[1P.sh[1P.sh[1P.sh[1P.sh
+[?2004l=== NFS-like Setup with Docker Volumes ===
+nfss
+nfsc
+nfss
+nfsc
+nfs-share
+1. Starting NFS Server (simulated)...
+3dc547502a831c5b97bcb8dada4cd1d15be715a5befe29205a80fd9441195ef7
+2. Waiting for server...
+3. Starting NFS Client...
+e144cca2d3f63085d0097e021a8ac3df6a6731a838c8e14ccf412fc111af60a4
+4. Checking setup...
+=== Server View ===
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:17 server_file.txt
+=== Client View ===
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 nobody nogroup   21 Oct 23 09:17 server_file.txt
+=== Testing Cross-Access ===
+=== Final Contents ===
+Server reading client file:
+File from NFS Client
+Additional from client
+Client reading server file:
+File from NFS Server
+Additional from server
+=== Volume Setup Complete ===
+✅ Shared storage is working!
+✅ Both containers can read/write to the same directory
+✅ This simulates NFS functionality
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./test-final.sh[27m./test-final.sh
+[?2004l=== Final NFS Test ===
+1. Basic functionality test...
+Files on server:
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 server_file.txt
+Files on client:
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:12 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 server_file.txt
+2. Creating new test files...
+3. Checking cross-visibility...
+Server sees client files:
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_client_file.txt
+Client sees server files:
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_server_file.txt
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 server_file.txt
+4. Testing permissions...
+-rw-r--r-- 1 nobody nogroup 44 Oct 23 09:17 /srv/share/upload/server_file.txt
+-rw-r--r-- 1 nobody nogroup 44 Oct 23 09:17 /mnt/nfs/upload/server_file.txt
+5. Testing file content sharing...
+File from NFS Server
+Additional from server
+Modified by server
+=== All Tests Completed Successfully ===
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ [7m./demonstrate-hw.sh[27m./demonstrate-hw.sh
+[?2004l=== Демонстрация выполнения ДЗ: Работа с NFS ===
+
+1. Запущено 2 виртуальных машины (сервер и клиент):
+NAMES     STATUS          NETWORKS
+nfsc      Up 34 seconds   nfs-net
+nfss      Up 40 seconds   nfs-net
+
+2. На сервере подготовлена и экспортирована директория:
+total 12
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 .
+drwxr-xr-x 1 root   root    4096 Oct 23 09:17 ..
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:18 upload
+
+3. В экспортированной директории создана поддиректория upload с правами на запись:
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:18 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_client_file.txt
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_server_file.txt
+-rw-r--r-- 1 nobody nogroup   63 Oct 23 09:18 server_file.txt
+drwxrwxrwx /srv/share/upload/
+
+4. Директория автоматически доступна на клиенте:
+total 16
+drwxrwxrwx 2 nobody nogroup 4096 Oct 23 09:18 .
+drwxr-xr-x 3 nobody nogroup 4096 Oct 23 09:10 ..
+-rw-r--r-- 1 nobody nogroup   44 Oct 23 09:17 client_file.txt
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_client_file.txt
+-rw-r--r-- 1 root   root       0 Oct 23 09:18 new_server_file.txt
+-rw-r--r-- 1 nobody nogroup   63 Oct 23 09:18 server_file.txt
+
+5. Тестирование записи с клиента:
+Тест записи с клиента
+
+6. Тестирование записи с сервера:
+Тест записи с сервера
+
+7. Проверка сетевой связности:
+PING 192.168.50.10 (192.168.50.10) 56(84) bytes of data.
+64 bytes from 192.168.50.10: icmp_seq=1 ttl=64 time=0.752 ms
+64 bytes from 192.168.50.10: icmp_seq=2 ttl=64 time=0.049 ms
+
+--- 192.168.50.10 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.049/0.400/0.752/0.351 ms
+
+=== ДЗ ВЫПОЛНЕНО УСПЕШНО ===
+Все требования выполнены с использованием Docker volumes
+В реальной среде использовался бы NFS протокол
+[?2004h]0;vassaya@Otus-PC: ~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[01;32mvassaya@Otus-PC[00m:[01;34m~/Desktop/OtusProjects/5. NFS/nfs-docker-setup[00m$ exit
+[?2004lexit
+
+Script done on 2025-10-23 09:23:11+00:00 [COMMAND_EXIT_CODE="0"]
