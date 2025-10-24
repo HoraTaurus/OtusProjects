@@ -1,69 +1,14 @@
-Документация: Сборка RPM-пакета и создание репозитория
-Обзор процесса
+RPM Builder - Документация
+Обзор проекта
 
-Данный документ описывает процесс настройки окружения для сборки RPM-пакетов и создания собственного RPM-репозитория.
-Предварительные требования
-Системные требования
+Проект представляет собой контейнеризированное решение для сборки RPM-пакетов и организации репозитория на базе AlmaLinux 9 с использованием Docker и Docker Compose.
 
-    Операционная система: Ubuntu/Debian или совместимая
-    Доступ к интернету для загрузки зависимостей
-    Права суперпользователя (sudo)
-
-Установленные компоненты
-
-    Docker
-    Docker Compose
-    Утилиты для работы с RPM
-
-Настройка окружения
-1. Установка и настройка Docker Compose
-
-Первоначально возникли проблемы с Docker Compose:
-bash
-
-# Удаление старой версии docker-compose
-sudo apt remove docker-compose
-
-# Установка curl если не установлен
-sudo apt install curl
-
-# Загрузка актуальной версии Docker Compose
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-
-# Предоставление прав на выполнение
-sudo chmod +x /usr/local/bin/docker-compose
-
-# Проверка версии
-docker-compose --version
-
-2. Создание рабочей директории
-bash
-
-mkdir rpm-builder && cd rpm-builder
-
-3. Сборка Docker-образа для RPM
-
-Использование Docker-образа на основе AlmaLinux 9:
-bash
-
-docker-compose build
-
-Структура проекта
-
-Структура:
-text
-
-rpm-builder/
-├── build_rpm.sh # Основной скрипт сборки RPM
-├── nginx.conf # Конфигурация nginx для репозитория
-├── index.html # Веб-интерфейс репозитория
-├── RPM.log # Лог процесса сборки
-└── README.md # Документация
-
-# Dockerfile 
+Docker Конфигурация
+Dockerfile
 dockerfile
 
 FROM almalinux:9
+
 RUN dnf update -y && \
     dnf install -y wget rpmdevtools rpm-build createrepo yum-utils cmake gcc git nano nginx lynx && \
     dnf clean all
@@ -72,197 +17,169 @@ WORKDIR /root
 EXPOSE 80
 CMD ["/bin/bash"]
 
-# Установка необходимых пакетов для сборки RPM
-RUN dnf update -y && \
-    dnf install -y \
-    rpmdevtools \
-    rpm-build \
-    make \
-    gcc \
-    git \
-    createrepo_c \
-    && dnf clean all
+Ключевые особенности:
 
-# Настройка окружения для сборки RPM
-RUN useradd builder && \
-    mkdir -p /home/builder/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS} && \
-    chown -R builder:builder /home/builder/
+    Базовый образ: AlmaLinux 9
 
-WORKDIR /home/builder
-USER builder
+    Установленные пакеты:
 
-# docker-compose.yml
+        Инструменты сборки: rpmdevtools, rpm-build, createrepo, cmake, gcc
+        Утилиты управления пакетами: yum-utils
+        Веб-сервер: nginx (порт 80)
+        Сетевые утилиты: wget, lynx
+        Системные утилиты: git, nano
+
+    Рабочая директория: /root
+
+    Открытый порт: 80 (для веб-доступа к репозиторию)
+
+docker-compose.yml
 yaml
 
-version: '3'
+version: '3.8'
+
 services:
   rpm-builder:
     build: .
     container_name: rpm-builder
-    privileged: true
     volumes:
-      - ./rpms:/usr/share/nginx/html/repo
-    ports:
-      - "8080:80"
-    tty: true
+      - ./rpms:/root/rpmbuild/RPMS
+      - ./sources:/root/rpmbuild/SOURCES
+      - ./specs:/root/rpmbuild/SPECS
     stdin_open: true
+    tty: true
 
-Процесс сборки RPM-пакета
-1. Подготовка спецификации (spec файла)
+Конфигурация сервиса:
+    Имя контейнера: rpm-builder
+    Volume маунты:
 
-Создайте spec-файл в директории specs/:
-spec
+        ./rpms → /root/rpmbuild/RPMS (выходные RPM-пакеты)
+        ./sources → /root/rpmbuild/SOURCES (исходные коды)
+        ./specs → /root/rpmbuild/SPECS (spec-файлы)
 
-Name:           my-custom-package
-Version:        1.0
-Release:        1%{?dist}
-Summary:        My Custom Application
+Интерактивный режим с TTY
 
-License:        MIT
-URL:            https://github.com/username/my-app
-Source0:        %{name}-%{version}.tar.gz
+Процесс сборки (из RPM.log)
+Установленные зависимости
+text
 
-BuildRequires:  gcc
-Requires:       bash
+yum install -y gcc
+yum install -y rpm-build
+yum install -y redhat-rpm-config
 
-%description
-My custom application description.
+Структура каталогов RPM
+text
 
-%prep
-%setup -q
+/root/rpmbuild/
+├── BUILD
+├── RPMS
+├── SOURCES
+├── SPECS
+└── SRPMS
 
-%build
-make %{?_smp_mflags}
+Процесс сборки пакета
+text
 
-%install
-mkdir -p %{buildroot}%{_bindir}
-install -m 755 myapp %{buildroot}%{_bindir}/
+Сборка пакета: example-app
+Версия: 1.0.0
+Архитектура: x86_64
 
-%files
-%{_bindir}/myapp
+Результаты сборки
+text
 
-%changelog
-* Thu Oct 23 2025 Your Name <email@example.com> - 1.0-1
-- Initial package build
+Собранные RPM-пакеты:
+/root/rpmbuild/RPMS/x86_64/example-app-1.0.0-1.el8.x86_64.rpm
 
-2. Сборка пакета
+Использование
+Запуск среды сборки
 bash
 
-# Запуск контейнера
+# Сборка и запуск контейнера
 docker-compose up -d
 
 # Вход в контейнер
 docker-compose exec rpm-builder bash
 
-# Внутри контейнера - сборка RPM
-rpmbuild -ba ~/rpmbuild/SPECS/my-custom-package.spec
-
-Создание RPM-репозитория
-1. Установка необходимых инструментов
+Подготовка файлов для сборки
 bash
 
-# В контейнере
-sudo dnf install -y createrepo_c httpd
+# Создание структуры каталогов на хосте
+mkdir -p specs sources rpms
 
-2. Создание структуры репозитория
+# Размещение файлов:
+# - spec-файлы в ./specs/
+# - исходные коды в ./sources/
+# - готовые RPM в ./rpms/ (автоматически)
+
+Процесс сборки внутри контейнера
 bash
 
-mkdir -p /var/www/html/repos/my-repo
-cp /home/builder/rpmbuild/RPMS/x86_64/*.rpm /var/www/html/repos/my-repo/
+# Инициализация RPM окружения
+rpmdev-setuptree
 
-3. Генерация метаданных репозитория
+# Копирование spec-файлов и исходных кодов
+cp /path/to/specs/* /root/rpmbuild/SPECS/
+cp /path/to/sources/* /root/rpmbuild/SOURCES/
+
+# Сборка RPM пакета
+cd /root/rpmbuild/SPECS
+rpmbuild -ba example.spec
+
+Настройка веб-репозитория
 bash
 
-cd /var/www/html/repos/my-repo
-createrepo_c .
+# Создание репозитория из собранных пакетов
+createrepo /root/rpmbuild/RPMS/x86_64/
 
-4. Настройка веб-сервера
-bash
-
-# Запуск Apache
-systemctl start httpd
-systemctl enable httpd
+# Запуск nginx для доступа к репозиторию
+systemctl start nginx
 
 # Проверка доступности репозитория
-curl http://localhost/repos/my-repo/repodata/repomd.xml
+lynx http://localhost/rpmbuild/RPMS/x86_64/
 
-Настройка клиентов для использования репозитория
-Создание файла репозитория на клиентских машинах
-bash
+Структура файлов проекта
+text
 
-# Создание файла репозитория
-sudo tee /etc/yum.repos.d/my-repo.repo > /dev/null <<EOF
-[my-repo]
-name=My Custom Repository
-baseurl=http://your-server/repos/my-repo/
-enabled=1
-gpgcheck=0
-EOF
+rpm-builder/
+├── Dockerfile                 # Конфигурация Docker образа
+├── docker-compose.yml         # Оркестрация контейнеров
+├── RPM.log                   # Лог процесса сборки
+└── rpms/                     # Собранные RPM-пакеты (volume)
 
-# Обновление кэша
-sudo dnf makecache
+Требования
+    Docker
+    Docker Compose
+    Доступ к репозиториям AlmaLinux 9 (для установки пакетов)
 
-# Установка пакета из репозитория
-sudo dnf install my-custom-package
+Веб-доступ к репозиторию
+После сборки пакетов и настройки nginx, репозиторий доступен по:
 
-Автоматизация процесса
-Скрипт для автоматической сборки и обновления репозитория
-bash
+    Внутри контейнера: http://localhost/rpmbuild/RPMS/x86_64/
+    С хоста: http://localhost:PORT/ (требуется настройка портов в docker-compose)
 
-#!/bin/bash
-# build-and-update-repo.sh
+Особенности
 
-set -e
+    Полный набор инструментов: Все необходимые утилиты для сборки RPM и создания репозитория
+    Веб-интерфейс: Встроенный nginx для доступа к репозиторию через HTTP
+    Автоматическое монтирование: Готовые пакеты доступны на хосте в папке ./rpms/
+    Интерактивный режим: Возможность отладки и ручного управления
+    Оптимизированный образ: Очистка кэша DNF для уменьшения размера
 
-# Сборка пакета
-echo "Building RPM package..."
-docker-compose exec rpm-builder rpmbuild -ba ~/rpmbuild/SPECS/my-custom-package.spec
+Доступные инструменты
 
-# Копирование RPM в репозиторий
-echo "Copying RPM to repository..."
-cp ./rpms/x86_64/*.rpm /var/www/html/repos/my-repo/
+    rpmbuild - сборка RPM пакетов
+    createrepo - создание метаданных репозитория
+    rpmdevtools - дополнительные утилиты для разработки RPM
+    nginx - веб-сервер для хостинга репозитория
+    lynx - текстовый браузер для тестирования
+    cmake, gcc - инструменты для сборки из исходных кодов
 
-# Обновление метаданных репозитория
-echo "Updating repository metadata..."
-cd /var/www/html/repos/my-repo
-createrepo_c --update .
+Устранение неполадок
 
-echo "Repository updated successfully!"
+При проблемах со сборкой проверьте:
 
-Мониторинг и обслуживание
-Проверка целостности репозитория
-bash
-
-# Проверка репозитория
-repoclosure --repo my-repo
-
-# Проверка подписей пакетов
-rpm -K /var/www/html/repos/my-repo/*.rpm
-
-Резервное копирование репозитория
-bash
-
-# Создание резервной копии
-tar -czf my-repo-backup-$(date +%Y%m%d).tar.gz -C /var/www/html/repos/my-repo .
-
-
-Проблемы и решения
-
-    Ошибки зависимостей при сборке
-
-        Убедитесь, что все BuildRequires указаны в spec-файле
-        Проверьте доступность репозиториев в контейнере
-
-    Проблемы с подписями пакетов
-
-        Настройте GPG-подпись для пакетов
-        Или отключите проверку подписи на клиентах (gpgcheck=0)
-
-    Ошибки доступа к репозиторию
-
-        Проверьте настройки веб-сервера
-        Убедитесь, что файлы имеют правильные права доступа
-
-Заключение
-
-Данная документация описывает полный процесс создания RPM-пакетов и организации собственного RPM-репозитория. Процесс включает в себя настройку окружения сборки, создание spec-файлов, сборку пакетов, развертывание репозитория и настройку клиентских машин для использования созданного репозитория.
+    Наличие spec-файлов в ./specs/
+    Наличие исходных кодов в ./sources/
+    Корректность прав доступа к volume каталогам
+    Доступность репозиториев AlmaLinux из контейнера
+    Состояние nginx сервиса: systemctl status nginx
