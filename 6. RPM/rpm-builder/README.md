@@ -54,10 +54,13 @@ docker-compose build
 text
 
 rpm-builder/
-├── docker-compose.yml
-└── Dockerfile
+├── build_rpm.sh # Основной скрипт сборки RPM
+├── nginx.conf # Конфигурация nginx для репозитория
+├── index.html # Веб-интерфейс репозитория
+├── RPM.log # Лог процесса сборки
+└── README.md # Документация
 
-Dockerfile 
+# Dockerfile 
 dockerfile
 
 FROM almalinux:9
@@ -88,19 +91,21 @@ RUN useradd builder && \
 WORKDIR /home/builder
 USER builder
 
-docker-compose.yml
+# docker-compose.yml
 yaml
 
-version: '3.8'
-
+version: '3'
 services:
   rpm-builder:
     build: .
+    container_name: rpm-builder
+    privileged: true
     volumes:
-      - ./rpms:/home/builder/rpmbuild/RPMS
-      - ./sources:/home/builder/rpmbuild/SOURCES
-      - ./specs:/home/builder/rpmbuild/SPECS
-    working_dir: /home/builder
+      - ./rpms:/usr/share/nginx/html/repo
+    ports:
+      - "8080:80"
+    tty: true
+    stdin_open: true
 
 Процесс сборки RPM-пакета
 1. Подготовка спецификации (spec файла)
@@ -240,37 +245,24 @@ bash
 # Создание резервной копии
 tar -czf my-repo-backup-$(date +%Y%m%d).tar.gz -C /var/www/html/repos/my-repo .
 
-Решение проблем
-Распространенные проблемы и решения
+
+Проблемы и решения
 
     Ошибки зависимостей при сборке
 
         Убедитесь, что все BuildRequires указаны в spec-файле
-
         Проверьте доступность репозиториев в контейнере
 
     Проблемы с подписями пакетов
 
         Настройте GPG-подпись для пакетов
-
         Или отключите проверку подписи на клиентах (gpgcheck=0)
 
     Ошибки доступа к репозиторию
 
         Проверьте настройки веб-сервера
-
         Убедитесь, что файлы имеют правильные права доступа
 
 Заключение
 
 Данная документация описывает полный процесс создания RPM-пакетов и организации собственного RPM-репозитория. Процесс включает в себя настройку окружения сборки, создание spec-файлов, сборку пакетов, развертывание репозитория и настройку клиентских машин для использования созданного репозитория.
-
-Для успешного выполнения домашнего задания необходимо:
-
-    Собрать и установить RPM-пакет
-
-    Создать и настроить RPM-репозиторий
-
-    Обеспечить доступность репозитория через веб-сервер
-
-    Проверить установку пакетов из созданного репозитория
