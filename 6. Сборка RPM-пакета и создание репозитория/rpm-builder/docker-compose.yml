@@ -1,0 +1,12 @@
+version: '3'
+services:
+  rpm-builder:
+    build: .
+    container_name: rpm-builder
+    privileged: true
+    volumes:
+      - ./rpms:/usr/share/nginx/html/repo
+    ports:
+      - "8080:80"
+    tty: true
+    stdin_open: true
